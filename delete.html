@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Operation</title>
+</head>
+<body>
+    <h1>Delete Operation</h1>
+    <form action="/delete" method="POST">
+        <label for="table">Choose a table:</label>
+        <select name="table" id="table">
+            <option value="Items_In_House">Items In House</option>
+            <option value="Item_Types">Item Types</option>
+            <option value="Recipes">Recipes</option>
+            <option value="Ingredients">Ingredients</option>
+            <option value="Items_Needed">Items Needed</option>
+            <option value="Shopping_List">Shopping List</option>
+        </select>
+
+        <div id="items_in_house_fields" class="form-fields">
+            <label for="item_id">Item ID:</label>
+            <input type="number" name="item_id" id="item_id">
+        </div>
+
