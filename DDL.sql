@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS Ingredients;
 CREATE TABLE Ingredients(
 	Item_ID int,
     Recipe_ID int,
-    PRIMARY KEY (Item_ID, Table_ID),
+    PRIMARY KEY (Item_ID, Recipe_ID),
     Foreign Key (Item_ID) References Items_In_House(Item_ID) ON DELETE CASCADE,
     Foreign Key(Recipe_ID) References Recipes(Recipe_ID) ON DELETE CASCADE
 );
@@ -72,11 +72,12 @@ VALUES('Cleaning'),
 ('Toiletries');
 
 INSERT INTO Items_In_House(Type_ID, Name, Quantity, Unit, Expiry_Date)
-VALUES(1,'Fabuloso',1,'Bottle', NULL),
-(2,'Bananas',6,'Single', '2025-02-08'),
-(3,'Toilet Paper',1,'Package', NULL),
-(2,'Butter',4,'Sticks', NULL),
-(2,'Flour',1,'kg', NULL);
+VALUES
+((SELECT Type_ID FROM Item_Types WHERE Name = 'Cleaning'),'Fabuloso',1,'Bottle', NULL),
+((SELECT Type_ID FROM Item_Types WHERE Name = 'Food'),'Bananas',6,'Single', '2025-02-08'),
+((SELECT Type_ID FROM Item_Types WHERE Name = 'Toiletries'),'Toilet Paper',1,'Package', NULL),
+((SELECT Type_ID FROM Item_Types WHERE Name = 'Food'),'Butter',4,'Sticks', NULL),
+((SELECT Type_ID FROM Item_Types WHERE Name = 'Food'),'Flour',1,'kg', NULL);
 
 INSERT INTO Shopping_Lists(Name)
 VALUES('Walmart'),
