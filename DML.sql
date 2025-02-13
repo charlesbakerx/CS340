@@ -52,7 +52,7 @@ Recipe_ID = :recipeIDInput,
 Insert INTO Items_Needed(Item_ID, Shopping_List_ID, Quantity)
 Values(
 Item_ID = :itemIDInput,
-Shopping_List_ID = : shoppingListIDInput,
+Shopping_List_ID = :shoppingListIDInput,
 Quantity = :quantityInput
 );
 
@@ -76,7 +76,7 @@ WHERE Item_ID = :Item_IDFromUpdateForm;
 UPDATE Item_Types
 SET
 Name = :nameInput
-WHERE Type_ID = : Type_IDFromUpdateForm;
+WHERE Type_ID = :Type_IDFromUpdateForm;
 
 -- updates the recipies
 UPDATE Recipes
@@ -97,9 +97,9 @@ WHERE Ingredients_ID = :Ingredients_IDFromUpdateForm;
 UPDATE Items_Needed
 SET
 Item_ID = :itemIDInput,
-Shopping_List_ID = : shoppingListIDInput,
+Shopping_List_ID = :shoppingListIDInput,
 Quantity = :quantityInput
-WHERE Items_Needed = : Items_NeededFromUpdateForm;
+WHERE Items_Needed = :Items_NeededFromUpdateForm;
 
 -- updates the shopping list
 UPDATE Shopping_Lists
