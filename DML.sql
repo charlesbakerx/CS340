@@ -125,12 +125,12 @@ WHERE Recipe_ID =?;
 
 -- Deletes an ingredient from a recipe
 DELETE FROM Ingredients
-WHERE Item_ID = ?;
+WHERE Item_ID = :itemIDInput AND Recipe_ID = recipeIDInput;
 
 -- Deletes an item from the item needed list
 DELETE FROM Items_Needed
-WHERE Item_ID = ?;
+WHERE Item_ID = :itemIDInput AND Shopping_List_ID = :shoppingListIDInput;
 
--- Deletes an item from the shopping list
+-- Deletes a list from the shopping lists
 DELETE FROM Shopping_Lists
-WHERE Item_ID =?;
+WHERE Shopping_List_ID = :shoppingListIDInput;
