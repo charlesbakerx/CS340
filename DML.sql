@@ -57,7 +57,7 @@ Quantity = :quantityInput
 );
 
 -- Adds a new item to the shopping list
-INSERT INTO Shopping_List(Name)
+INSERT INTO Shopping_Lists(Name)
 Values(Name = :nameInput);
 
 -- Update statements in order to update the items
@@ -102,7 +102,7 @@ Quantity = :quantityInput
 WHERE Items_Needed = : Items_NeededFromUpdateForm;
 
 -- updates the shopping list
-UPDATE Shopping_List
+UPDATE Shopping_Lists
 SET 
 Name = :nameInput
 WHERE Shopping_List_ID = :Shopping_List_IDFromUpdateForm
