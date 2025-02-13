@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>Item Types</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>Item Types</h1>
+
+[ <a href="item_types.html">Item Types</a> | <a href="recipes.html">Recipes</a> | <a href="shopping_lists.html">Shopping Lists</a> ]
+
+<div id="browse" style="display: block">
+<p><strong>Browse Item Types</strong></p>
+<table border="1" cellpadding="5">
+  <tr>
+    <th><a href="#">New</a></th>
+    <th></th>
+    <th>ID</th>
+    <th>Name</th>
+  </tr>
+  <tr>
+    <td><a href="#">Edit</a></td>
+    <td><a href="#">Delete</a></td>
+    <td align="right">1</td>
+    <td>Cleaning Supplies</td>
+  </tr>
+  <tr>
+    <td><a href="#">Edit</a></td>
+    <td><a href="#">Delete</a></td>
+    <td align="right">2</td>
+    <td>Food Items</td>
+  </tr>
+  <tr>
+    <td><a href="#">Edit</a></td>
+    <td><a href="#">Delete</a></td>
+    <td align="right">3</td>
+    <td>Household Goods</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+</div> <!-- browse -->
+
+<div id="insert" style="display: block">
+    <form id="addItemType">
+        <legend><strong>Add Item Type</strong></legend>
+          <fieldset class="fields">
+            <label> Name </label> <input type="text" name="name">
+          </fieldset>
+          <input class="btn" type="submit" id="addItemType" value="Add Item Type">
+          <input class="btn" type="button" value="cancel">
+    </form> <!--add new item type-->
+</div><!-- insert -->
+
+<p>&nbsp;</p>
+<div id="update" style="display: block">
+  <form id="updateItemType">
+      <legend><strong>Update Item Type</strong></legend>
+          <fieldset class="fields">
+          <label>ID:</label> 1
+            <label> Name </label> <input type="text" value="Cleaning Supplies" name="name">
+    </fieldset>
+    <input class="btn" type="submit" id="UpdateSaveItemType" value="Save Update Item Type">
+          <input class="btn" type="button" value="cancel" >
+  </form> 
+</div><!-- update -->
+<p>&nbsp;</p>
+<div id="delete" style="display: block">
+  <form id="deleteItemType">
+      <legend><strong>Delete Item Type</strong></legend>
+          <fieldset class="fields">
+          <p>Are you sure you wish to delete the following?</p>
+          <label>ID:</label> 1
+            <label> Name </label> Cleaning Supplies
+            
+    </fieldset>
+    <input class="btn" type="submit" id="DeleteItemType" value="Delete Item Type">
+          <input class="btn" type="button" value="cancel" >
+  </form> 
+</div><!-- delete -->
+</body>
+</html>
