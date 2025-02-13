@@ -35,3 +35,47 @@
     <td><a href="#">Delete</a></td>
     <td>3</td>
     <td>Sams</td>
+    </tr>
+</table>
+<p>&nbsp;</p>
+</div> <!-- browse -->
+
+<div id="insert" style="display: block">
+    <form id="addShoppingList">
+        <legend><strong>Add Item a different Shopping List</strong></legend>
+          <fieldset class="fields">
+            <label> Name </label> <input type="text" name="name">
+          </fieldset>
+          <input class="btn" type="submit" id="addShoppingList" value="Add Shopping List">
+          <input class="btn" type="button" value="cancel">
+    </form> <!--add new item type-->
+</div><!-- insert -->
+
+<p>&nbsp;</p>
+<div id="update" style="display: block">
+  <form id="updateShoppingList">
+      <legend><strong>Update Shopping List</strong></legend>
+          <fieldset class="fields">
+          <label>ID:</label> 1
+            <label> Name </label> <input type="text" value="Walmart" name="name">
+    </fieldset>
+    <input class="btn" type="submit" id="UpdateSaveShoppingList" value="Save Update Shopping List">
+          <input class="btn" type="button" value="cancel" >
+  </form> 
+</div><!-- update -->
+<p>&nbsp;</p>
+<div id="delete" style="display: block">
+  <form id="deleteItemType">
+      <legend><strong>Delete Shopping List</strong></legend>
+          <fieldset class="fields">
+          <p>Are you sure you wish to delete the following?</p>
+          <label>ID:</label> 1
+            <label> Name </label> Walmart
+            
+    </fieldset>
+    <input class="btn" type="submit" id="DeleteItemType" value="Delete Item Type">
+          <input class="btn" type="button" value="cancel" >
+  </form> 
+</div><!-- delete -->
+</body>
+</html>
