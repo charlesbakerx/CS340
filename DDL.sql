@@ -85,9 +85,10 @@ VALUES('Walmart'),
 ('Sams');
 
 INSERT INTO Items_Needed(Item_ID, Shopping_List_ID, Quantity)
-VALUES(1,1,1),
-(2,1,2),
-(3,1,1);
+VALUES
+((SELECT Item_ID FROM Items_In_House WHERE Name = 'Fabuloso'), (SELECT Shopping_List_ID FROM Shopping_Lists WHERE Name = 'Walmart'), 1),
+((SELECT Item_ID FROM Items_In_House WHERE Name = 'Bananas'), (SELECT Shopping_List_ID FROM Shopping_Lists WHERE Name = 'Walmart'), 2),
+((SELECT Item_ID FROM Items_In_House WHERE Name = 'Toilet Paper'), (SELECT Shopping_List_ID FROM Shopping_Lists WHERE Name = 'Walmart'), 1);
 
 INSERT INTO Recipes(Name, Instructions, Description)
 VALUES('Banana Bread', 'Bake at 325 for 1 hour', 'Family Recipe'),
@@ -95,6 +96,7 @@ VALUES('Banana Bread', 'Bake at 325 for 1 hour', 'Family Recipe'),
 ('Mac+Cheese','Cook Pasta and add cheese butter and milk', 'Kid Favorite');
 
 INSERT INTO Ingredients(Item_ID, Recipe_ID)
-VALUES(2,1),
-(4,1),
-(5,1);
+VALUES
+((SELECT Item_ID FROM Items_In_House WHERE Name = "Bananas"), (SELECT Recipe_ID FROM Recipes WHERE Name = "Banana Bread")),
+((SELECT Item_ID FROM Items_In_House WHERE Name = "Butter"), (SELECT Recipe_ID FROM Recipes WHERE Name = "Banana Bread")),
+((SELECT Item_ID FROM Items_In_House WHERE Name = "Flour"), (SELECT Recipe_ID FROM Recipes WHERE Name = "Banana Bread"));
