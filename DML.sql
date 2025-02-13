@@ -64,7 +64,7 @@ Values(Name = :nameInput);
 
 -- Updates the quantity of an item in the house
 UPDATE Items_In_House
-SET 
+SET
 Type_ID = :typeIDInput,
 Name = :nameInput,
 Quantity = :quantityInput,
@@ -88,7 +88,7 @@ WHERE Recipe_ID = :Recipe_IDFromUpdateForm;
 
 -- updates the ingredients to a recipe
 UPDATE Ingredients
-SET 
+SET
 Item_ID = :itemIDInput,
 Recipe_ID = :recipeIDInput,
 WHERE Ingredients_ID = :Ingredients_IDFromUpdateForm;
@@ -103,7 +103,7 @@ WHERE Items_Needed = :Items_NeededFromUpdateForm;
 
 -- updates the shopping list
 UPDATE Shopping_Lists
-SET 
+SET
 Name = :nameInput
 WHERE Shopping_List_ID = :Shopping_List_IDFromUpdateForm
 
@@ -133,4 +133,4 @@ WHERE Item_ID = :itemIDInput AND Shopping_List_ID = :shoppingListIDInput;
 
 -- Deletes a list from the shopping lists
 DELETE FROM Shopping_Lists
-WHERE Shopping_List_ID = :shoppingListIDInput;
+WHERE Shopping_List_ID = ?;
