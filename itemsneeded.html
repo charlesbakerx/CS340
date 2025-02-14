@@ -15,33 +15,75 @@
   <tr>
     <th><a href="#">New</a></th>
     <th></th>
-    <th>ID</th>
-    <th>Shopping List ID</th>
+    <th>Name</th>
+    <th>Shopping List</th>
     <th>Quantity</th>
   </tr>
   <tr>
     <td><a href="#">Edit</a></td>
     <td><a href="#">Delete</a></td>
-    <td align="right">1</td>
-    <td>2</td>
+    <td align="right">Fabuloso</td>
+    <td>Target</td>
     <td>1</td>
   </tr>
   <tr>
     <td><a href="#">Edit</a></td>
     <td><a href="#">Delete</a></td>
-    <td align="right">2</td>
-    <td>1</td>
+    <td align="right">Bananas</td>
+    <td>Walmart</td>
     <td>2</td>
   </tr>
   <tr>
     <td><a href="#">Edit</a></td>
     <td><a href="#">Delete</a></td>
-    <td>3</td>
-    <td>1</td>
+    <td>Toilet Paper</td>
+    <td>Walmart</td>
     <td>1</td>
     </tr>
 </table>
 <p>&nbsp;</p>
 </div> <!-- browse -->
+
+<div id="insert" style="display: block">
+    <form id="addShoppingList">
+        <legend><strong>Add an item to the Shopping List</strong></legend>
+          <fieldset class="fields">
+            <label> Name </label> <input type="text" name="name">
+            <label> Shopping List</label> <input type="text" name="shoppinglist">
+            <label> Quantity </label> <input type="text" name="quantity">
+          </fieldset>
+          <input class="btn" type="submit" id="addShoppingList" value="Add Shopping List">
+          <input class="btn" type="button" value="cancel">
+    </form> <!--add new item type-->
+</div><!-- insert -->
+
+<p>&nbsp;</p>
+<div id="update" style="display: block">
+  <form id="updateShoppingList">
+      <legend><strong>Update item in the Shopping List</strong></legend>
+          <fieldset class="fields">
+            <label> Name </label> <input type="text" value="Fabuloso" name="name">
+            <label> Shopping List</label> <input type="text" value="Target" name="shoppinglist">
+            <label> Quantity </label> <input type="text" value="1" name="quantity">
+    </fieldset>
+    <input class="btn" type="submit" id="UpdateSaveShoppingList" value="Save Update Shopping List">
+          <input class="btn" type="button" value="cancel" >
+  </form> 
+</div><!-- update -->
+<p>&nbsp;</p>
+<div id="delete" style="display: block">
+  <form id="deleteItemType">
+      <legend><strong>Delete item from the Shopping List</strong></legend>
+          <fieldset class="fields">
+          <p>Are you sure you wish to delete the following?</p>
+          <p>Fabuloso from Walmart </p>
+            
+    </fieldset>
+    <input class="btn" type="submit" id="DeleteItemType" value="Delete Item Type">
+          <input class="btn" type="button" value="cancel" >
+  </form> 
+</div><!-- delete -->
+
+
 </body>
 </html>
