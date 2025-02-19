@@ -1,8 +1,13 @@
 -- Select statements that will support the READ operation for each table
+-- Improvement: SELECT queries will need to be updated to utilize a JOIN
+--              to provide relevant names to IDs. ;Quinn Downey
 SELECT * FROM Item_Types
 ORDER BY Type_ID ASC ;
 
-SELECT * FROM Items_In_House
+SELECT * 
+FROM Items_In_House
+INNER JOIN Item_Types
+ON Items_In_House.Type_ID = Item_Types.Type_ID 
 ORDER BY Name ASC;
 
 SELECT * FROM Recipes
