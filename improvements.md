@@ -3,8 +3,8 @@
 
 # HTML Improvements
 ## Household Inventory / Home Page
-- [ ] Item_ID is missing from the table, Type_ID is possibly supposed to be Item_ID making Type_ID the actual missing field. ;Quinn Downey
-- [ ] Displays Type_ID instead of name ;Quinn Downey
+- [x] Item_ID is missing from the table, Type_ID is possibly supposed to be Item_ID making Type_ID the actual missing field. ;Quinn Downey
+- [x] Displays Type_ID instead of name ;Quinn Downey
 
 ## Recipes Page
 - [ ] Table headers for Description and Instructions seem to be swapped ;Quinn Downey
