@@ -17,5 +17,6 @@
 - [ ] The Add form has the title "Add Item a different Shopping List" ;Quinn Downey
 
 # DML Improvements
-- [ ] SELECT queries will need to be updated to utilize a JOIN to provide relevant names to IDs. ;Quinn Downey
+- [x] SELECT queries will need to be updated to utilize a JOIN to provide relevant names to IDs. ;Quinn Downey
 - [ ] DELETE anomaly deleting and item from Items_In_House also deletes in Items_Needed and Ingredients. ; Gregory Preiss
+This anomaly is due to the fact that Rows are added to both Items_Needed and Ingredients based on the item already being present in the Items_In_House table. We will have to either not use a delete statement on Items_In_House and instead just set the quantity to zero or rework how the database to have a separate Items and Items_In_House table with the Items_Needed and Items_In_House tables referencing the new Items table.
