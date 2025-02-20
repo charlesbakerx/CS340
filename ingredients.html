@@ -111,7 +111,11 @@
     <form method="POST" id="addItem">
         <legend><strong>Add Ingredient</strong></legend>
         <fieldset class="fields">
-            <label> Name </label> <input type="text" name="Name">
+          <label> Recipe </label>
+          <select id="recipes" name="recipes">
+            <option value="banana-bread">Banana Bread</option>
+          </select>
+          <label> Name </label> <input type="text" name="Name">
         </fieldset>
           <input class="btn" type="submit" id="addItem" value="Add Item">
           <input class="btn" type="button" value="cancel" onClick="browseItems()">
@@ -122,6 +126,10 @@
     <form method="POST" id="UpdateItem">
         <legend><strong>Update Item</strong></legend>
           <fieldset class="fields">
+          <label> Recipe </label>
+          <select id="recipes" name="recipes">
+            <option value="banana-bread">Banana Bread</option>
+          </select>
             <label> Name </label> <input type="text" name="Name" value="Bananas">
           </fieldset>
           <input class="btn" type="submit" id="UpdateSaveItem" value="Save Update Item">
