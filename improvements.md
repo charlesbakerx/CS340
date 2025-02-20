@@ -7,14 +7,14 @@
 - [x] Displays Type_ID instead of name ;Quinn Downey
 
 ## Recipes Page
-- [ ] Table headers for Description and Instructions seem to be swapped ;Quinn Downey
-- [ ] The update and add forms do not have appropriate fields to update/add to the table. ;Quinn Downey
+- [x] Table headers for Description and Instructions seem to be swapped ;Quinn Downey
+- [x] The update and add forms do not have appropriate fields to update/add to the table. ;Quinn Downey
 
 ## Ingredients Page
-- [ ] The update and add forms do not have appropriate fields to update/add to the table. ;Quinn Downey
+- [x] The update and add forms do not have appropriate fields to update/add to the table. ;Quinn Downey
 
 ## Shopping Lists Page
-- [ ] The Add form has the title "Add Item a different Shopping List" ;Quinn Downey
+- [x] The Add form has the title "Add Item a different Shopping List" ;Quinn Downey
 
 # DML Improvements
 - [x] SELECT queries will need to be updated to utilize a JOIN to provide relevant names to IDs. ;Quinn Downey
