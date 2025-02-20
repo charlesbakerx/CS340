@@ -20,7 +20,7 @@ Create TABLE Items_In_House (
 	Item_ID INT NOT NULL AUTO_INCREMENT UNIQUE,
     Type_ID INT,
     Name varchar(255) NOT NULL,
-    Quantity INT NOT NULL,
+    Quantity INT,
     Unit varchar(50) NOT NULL,
     Expiry_Date DATE,
     PRIMARY KEY (Item_ID),
