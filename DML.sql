@@ -13,13 +13,23 @@ ORDER BY Name ASC;
 SELECT * FROM Recipes
 ORDER BY Recipe_ID ASC;
 
-SELECT * FROM Ingredients
+SELECT * 
+FROM Ingredients
+INNER JOIN Recipes
+ON Ingredients.Recipe_ID = Recipes.Recipe_ID
+INNER JOIN Items_In_House
+ON Ingredients.Item_ID = Items_In_House.Item_ID
 WHERE Recipe_ID = ?;
 
 SELECT * FROM Shopping_Lists
 ORDER BY Shopping_List_ID ASC;
 
-SELECT * FROM Items_Needed
+SELECT * 
+FROM Items_Needed
+INNER JOIN Items_In_House
+ON Items_Needed.Item_ID = Items_In_House.Item_ID
+INNER JOIN Shopping_Lists
+ON Items_Needed.Shopping_List_ID = Items_Needed.Shopping_List_ID
 WHERE Shopping_List_ID = ?;
 
 -- Insert statements to add items
