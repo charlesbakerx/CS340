@@ -1,5 +1,5 @@
 # Document Improvements
-- [ ] Separate sections for actions taken and not taken after each step in addition to the verbatim feedback from the step, even if we used all suggestions. ; Quinn Downey
+- [ x] Separate sections for actions taken and not taken after each step in addition to the verbatim feedback from the step, even if we used all suggestions. ; Quinn Downey
 
 # HTML Improvements
 ## Household Inventory / Home Page
