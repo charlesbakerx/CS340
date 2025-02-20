@@ -33,10 +33,11 @@
                 document.getElementById('delete').style.display = 'block';
             }
             else { //by default display browse
+            // Set all to default visible for reviewing
                 document.getElementById('browse').style.display = 'block';
-                document.getElementById('insert').style.display = 'none';
-                document.getElementById('update').style.display = 'none';
-                document.getElementById('delete').style.display = 'none';
+                document.getElementById('insert').style.display = 'block';
+                document.getElementById('update').style.display = 'block';
+                document.getElementById('delete').style.display = 'block';
             }
         }
     function newItem() { showform('insert'); }
@@ -58,8 +59,9 @@
   <tr>
     <th><a href="#" onClick="newItem()">New</a></th>
     <th></th>
-    <th>Type ID</th>
+    <th>Item ID</th>
     <th>Name</th>
+    <th>Type</th>
     <th>Quantity</th>
     <th>Unit</th>
     <th>Expiry Date</th>
@@ -69,6 +71,7 @@
     <td><a href="#" onclick="deleteItem('this.itemID')">Delete</a></td>
     <td align="right" >1</td>
     <td>Fabuloso</td>
+    <td>Cleaning</td>
     <td align="right" >1</td>
     <td>Bottle</td>
     <td><em>NULL</em></td>
@@ -78,6 +81,7 @@
     <td><a href="#" onclick="deleteItem('this.itemID')">Delete</a></td>
     <td align="right" >2</td>
     <td>Bananas</td>
+    <td>Food</td>
     <td align="right" >6</td>
     <td>Single</td>
     <td>2025-02-08</td>
@@ -87,6 +91,7 @@
     <td><a href="#" onclick="deleteItem('this.itemID')">Delete</a></td>
     <td align="right" >3</td>
     <td>Toilet Paper</td>
+    <td>Toiletries</td>
     <td align="right" >1</td>
     <td>Package</td>
     <td><em>NULL</em></td>
@@ -96,6 +101,7 @@
     <td><a href="#" onclick="deleteItem('this.itemID')">Delete</a></td>
     <td align="right" >4</td>
     <td>Butter</td>
+    <td>Food</td>
     <td align="right" >4</td>
     <td>Sticks</td>
     <td><em>NULL</em></td>
@@ -105,6 +111,7 @@
     <td><a href="#" onclick="deleteItem('this.itemID')">Delete</a></td>
     <td align="right" >5</td>
     <td>Flour</td>
+    <td>Food</td>
     <td align="right" >2</td>
     <td>Kg</td>
     <td><em>NULL</em></td>
@@ -116,8 +123,9 @@
     <form method="POST" id="addItem">
         <legend><strong>Add Item</strong></legend>
           <fieldset class="fields">
-            <label> Type ID </label> <input type="text" name="Type_ID">
+            <label> Item ID </label> <input type="text" name="Type_ID">
             <label> Name </label> <input type="text" name="Name">
+            <label> Type </label> <input type="text" name="Type">
             <label> Quantity </label> <input type="text" name="Quantity">
             <label> Unit </label> <input type="text" name="Unit">
             <label> Expiry Date </label> <input type="text" name="Expiry_Date">
@@ -132,8 +140,9 @@
         <legend><strong>Update Item</strong></legend>
           <fieldset class="fields">
           <input type="hidden" name="itemID" id="updateitemID" value="1">
-          <label> Type ID: </label> 1
+          <label> Item ID: </label> 1
             <label> Name </label> <input type="text" name="Name" value="Fabuloso">
+            <label> Type </label> <input type="text" name="Name" value="Cleaning">
             <label> Quantity </label> <input type="text" name="Quantity" value="1">
             <label> Unit </label> <input type="text" name="Unit" value="Bottle">
             <label> Expiry Date </label> <input type="text" name="Expiry_Date" value="">
@@ -149,7 +158,7 @@
           <fieldset class="fields">
           <p>Are you sure you wish to delete the following?</p>
           <input type="hidden" name="itemID" id="deleteitemID" value="1">
-          <label><strong>Type ID:</strong></label> 1
+          <label><strong>Item ID:</strong></label> 1
             <label> <strong>Name</strong> </label> Fabuloso
             
     </fieldset>
