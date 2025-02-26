@@ -57,3 +57,22 @@
 
     <input type="submit">
 </form>
+
+// drop down select 
+    <select name="input-Type_ID" id="input-Type_ID-ajax">
+        <option value="">Select an Item Type</option>
+        {{#each type}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+// search function
+<h2>Search Using an HTML Form</h2>
+<p>Search by item name using the field below.</p>
+<form id="search-item-html" method='GET' action='/'>
+    <label for="input-Name">Search by Item Name: </label>
+    <input type="text" name="Name" id="input-Name-html-search">
+    
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>

@@ -27,12 +27,20 @@ app.use(express.static('public'))
 */
 app.get('/', function(req, res)
     {  
-        let query1 = "SELECT * FROM Items_In_House;";               // Define our query
+        let query1; "SELECT * FROM Items_In_House;";               // Define our query
+
+        let query2 = "SELECT * FROM Item_Types";
 
         db.pool.query(query1, function(error, rows, fields){    // Execute the query
 
             res.render('index', {data: rows});                  // Render the index.hbs file, and also send the renderer
         })                                                      // an object where 'data' is equal to the 'rows' we
+
+        // Run query 2
+        db.pool.query(query2, function
+            (error, rows, fields){
+                res.render('index', {data: rows});
+            })
     });                                                         // received back from the query
 
     app.post('/add-item-form', function(req, res){
