@@ -110,6 +110,7 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>Edit</th> <!-- New header for edit button -->
             <th>delete</th>
         </tr>
     </thead>
@@ -127,8 +128,35 @@
             <td>{{this.Unit}}</td>
             <td>{{this.Expiry_Date}}</td>
             <td><button onclick="deleteItem({{this.id}})">Delete</button></td>
+            <td><button onclick="editItem({{this.Item_ID}})">Edit</button></td> <!-- Edit button -->
         </tr>
         {{/each}}
     </tbody>
 </table>
 <script src="./js/delete_item.js"></script>
+
+// Updating the Items
+<h2>Updating A Item in the household inventory</h2>
+<p>To update a specific item select the item from the drop-down menu on the left and their desired type on the right</p>
+<form id="update-item-form-ajax">
+
+    <label for="input-Name">Item name: </label>
+    <select name="input-Name" id="mySelect">
+        <option value="test">Select an Item</option>
+        {{#each data}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-Type">Item Type: </label>
+    <select name="input-Type" id="input-homeworld-update">
+        <option>Select a type</option>
+        {{#each Item_Types}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <input type="submit">
+
+</form>
+
+<script src="./js/update_item.js"></script>

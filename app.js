@@ -92,6 +92,41 @@ app.delete('/delete-item-ajax/', function(req,res,next){
               }
   
                 });
+// Update route
+app.put('/put-item-ajax', function(req,res,next){
+    let data = req.body;
+  
+    let Type = parseInt(data.Type);
+    let Item = parseInt(data.Item);
+  
+    let queryUpdateType = `UPDATE Items_In_House SET Type = ? WHERE Type.id = ?`;
+    let selectType= `SELECT * FROM Item_Types WHERE Type_ID = ?`
+  
+          // Run the 1st query
+          db.pool.query(queryUpdateType, [Type, Item], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectType, [Type], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
 /*
     LISTENER
 */
