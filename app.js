@@ -90,8 +90,8 @@ app.delete('/delete-item-ajax/', function(req,res,next){
               console.log(error);
               res.sendStatus(400);
               }
-  
-                });
+          })
+});
 // Update route
 app.put('/put-item-ajax', function(req,res,next){
     let data = req.body;
