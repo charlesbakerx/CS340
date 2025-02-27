@@ -1,0 +1,162 @@
+<!-- index.hbs -->
+{{!-- Create a table --}}
+<table id = :ItemsInHouse-table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+        <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+        <th>Delete</th> <!-- New header for delete button -->
+    </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the Item_ID, Type_ID, Name, Quantity, Unit, and Expiry_Date, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.Item_ID}}</td>
+            <td>{{this.Type_ID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Quantity}}</td>
+            <td>{{this.Unit}}</td>
+            <td>{{this.Expiry_Date}}</td>
+        </tr>
+        {{/each}}
+
+        {{#each data}}
+    <tr data-value={{this.Item_ID}}>
+        <td>{{this.Item_ID}}</td>
+        <td>{{this.Type_ID}}</td>
+        <td>{{this.Name}}</td>
+        <td>{{this.Quantity}}</td>
+        <td>{{this.Unit}}</td>
+        <td>{{this.Expiry_Date}}</td>
+        <td><button onclick="deleteItem({{this.Item_ID}})">Delete</button></td> <!-- Delete button -->
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+<!-- /views/index.hbs -->
+<h2>Adding Data using an HTML form</h2>
+<p>To add a new Item to your household inventory, please enter the required information below and click `Submit`!</p>
+<form id="add-item-form" method="POST" action="/add-item-form">
+    <label for="input-Item_ID">Item ID: </label>
+    <input type="number" name="input-Item_ID" id="input-Item_ID">
+    
+    <label for="input-Type_ID">Type ID: </label>
+    <input type="number" name="input-Type_ID" id="input-Type_ID">
+
+    <label for="input-Name">Name: </label>
+    <input type="text" name="input-Name" id="input-Name">
+
+    <label for="input-Quantity">Quantity of Item: </label>
+    <input type="number" name="input-Quantity" id="input-Quantity">
+
+    <label for="input-Unit">Unit to measure the item: </label>
+    <input type="text" name="input-Unit" id="input-Unit">
+
+    <label for="input-Expiry_Date">Date Item Expires if it is perishable: </label>
+    <input type="date" name="input-Expiry_Date" id="input-Expiry_Date">
+
+    <input type="submit">
+</form>
+
+// drop down select 
+    <select name="input-Type_ID" id="input-Type_ID-ajax">
+        <option value="">Select an Item Type</option>
+        {{#each type}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+// search function
+<h2>Search Using an HTML Form</h2>
+<p>Search by item name using the field below.</p>
+<form id="search-item-html" method='GET' action='/'>
+    <label for="input-Name">Search by Item Name: </label>
+    <input type="text" name="Name" id="input-Name-html-search">
+    
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>
+
+// Delete data
+<table id="ItemsInHouse-table">>
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Edit</th> <!-- New header for edit button -->
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr data-value={{this.id}}>>
+            <td>{{this.Item_ID}}</td>
+            <td>{{this.Type_ID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Quantity}}</td>
+            <td>{{this.Unit}}</td>
+            <td>{{this.Expiry_Date}}</td>
+            <td><button onclick="deleteItem({{this.id}})">Delete</button></td>
+            <td><button onclick="editItem({{this.Item_ID}})">Edit</button></td> <!-- Edit button -->
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_item.js"></script>
+
+// Updating the Items
+<h2>Updating A Item in the household inventory</h2>
+<p>To update a specific item select the item from the drop-down menu on the left and their desired type on the right</p>
+<form id="update-item-form-ajax">
+
+    <label for="input-Name">Item name: </label>
+    <select name="input-Name" id="mySelect">
+        <option value="test">Select an Item</option>
+        {{#each data}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-Type">Item Type: </label>
+    <select name="input-Type" id="input-homeworld-update">
+        <option>Select a type</option>
+        {{#each Item_Types}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <input type="submit">
+
+</form>
+
+<script src="./js/update_item.js"></script>
