@@ -74,6 +74,24 @@ app.get('/', function(req, res)
             }
         })
     })
+
+// Delete route 
+app.delete('/delete-item-ajax/', function(req,res,next){
+    let data = req.body;
+    let Item_ID = parseInt(data.id);
+    let deleteItem_In_House = `DELETE FROM Items_In_House WHERE pid = ?`;
+  
+  
+          // Run the 1st query
+          db.pool.query(deleteItem_In_House [Item_ID], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+                });
 /*
     LISTENER
 */

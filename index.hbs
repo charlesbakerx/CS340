@@ -1,6 +1,6 @@
 <!-- index.hbs -->
 {{!-- Create a table --}}
-<table>
+<table id = :ItemsInHouse-table>
 
     {{!-- Header section --}}
     <thead>
@@ -14,6 +14,14 @@
             </th>
             {{/each}}
         </tr>
+        <tr>
+        {{#each data.[0]}}
+        <th>
+            {{@key}}
+        </th>
+        {{/each}}
+        <th>Delete</th> <!-- New header for delete button -->
+    </tr>
     </thead>
 
     {{!-- Body section --}}
@@ -30,6 +38,18 @@
             <td>{{this.Expiry_Date}}</td>
         </tr>
         {{/each}}
+
+        {{#each data}}
+    <tr data-value={{this.Item_ID}}>
+        <td>{{this.Item_ID}}</td>
+        <td>{{this.Type_ID}}</td>
+        <td>{{this.Name}}</td>
+        <td>{{this.Quantity}}</td>
+        <td>{{this.Unit}}</td>
+        <td>{{this.Expiry_Date}}</td>
+        <td><button onclick="deleteItem({{this.Item_ID}})">Delete</button></td> <!-- Delete button -->
+    </tr>
+    {{/each}}
     </tbody>
 </table>
 
@@ -76,3 +96,39 @@
     <input type="submit">
     <a href='/'><button>Reset</button></a>
 </form>
+
+// Delete data
+<table id="ItemsInHouse-table">>
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr data-value={{this.id}}>>
+            <td>{{this.Item_ID}}</td>
+            <td>{{this.Type_ID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Quantity}}</td>
+            <td>{{this.Unit}}</td>
+            <td>{{this.Expiry_Date}}</td>
+            <td><button onclick="deleteItem({{this.id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_item.js"></script>
