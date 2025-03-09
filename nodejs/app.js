@@ -258,6 +258,21 @@ app.delete('/delete-list/:id', function(req, res) {
     });
 });
 
+// Route to delete an item
+app.delete('/delete-item/:itemID', function(req, res) {
+    let Item_ID = parseInt(req.params.itemID);
+    let query = `DELETE FROM Items_In_House WHERE Item_ID = ?`;
+
+    db.pool.query(query, [Item_ID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204)
+        }
+    })
+})
+
 // Route to delete an item needed
 app.delete('/delete-item-needed/:itemID/:listID', function(req, res) {
     let Item_ID = parseInt(req.params.itemID);
