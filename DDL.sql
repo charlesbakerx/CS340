@@ -63,7 +63,8 @@ CREATE TABLE Ingredients(
 );
 	
 SET FOREIGN_KEY_CHECKS = 1;
-COMMIT; 
+SET AUTOCOMMIT = 1;
+COMMIT;
 
 -- Inserting the Data from the example data tables
 INSERT INTO Item_Types(Name)
