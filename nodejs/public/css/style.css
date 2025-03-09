@@ -5,7 +5,7 @@
     --secondary-bg: #1B1F3B;
     --primary-text: #E0E0E0;
     --secondary-text: #A0A0A0;
-    --primary-accent: #4D9DE0;
+    --primary-accent: #4185be;
     --secondary-accent: #4A6FA5;
     --success-color: #3B8C80;
     --table-hover: #1b1f4b;
@@ -43,6 +43,30 @@ body {
     padding: var(--padding-large);
     width: 85%;
     margin: auto;
+}
+
+/* Nav Bar Styling */
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: var(--padding-large);
+}
+
+nav a {
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+    padding: var(--padding-small);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+nav a[type="current"] {
+    background-color: var(--primary-accent);
+}
+
+nav a:hover {
+    background-color: var(--success-color);
 }
 
 /* Header Styling */

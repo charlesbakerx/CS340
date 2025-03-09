@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav>
-    <a href="/">Items In Household</a> | 
+    <a href="/" type="current">Items In Household</a>
     <a href="item_types">Item Types</a>
     <a href="shopping_lists">Shopping Lists</a>
     <a href="items_needed">Manage Items Needed</a>
@@ -71,7 +71,7 @@
 
 <h2>Search for an Item</h2>
 <form id="search-item-html" method="GET" action="/">
-    <label for="input-Name">Search by Item Name: </label>
+    <label for="input-Name-html-search">Search by Item Name: </label>
     <input type="text" name="Name" id="input-Name-html-search">
     <input type="submit" value="Search">
     <a href="/"><button type="button">Reset</button></a>
@@ -106,9 +106,6 @@
 
     <input type="submit" value="Update">
 </form>
-
-<script src="./js/delete_item.js"></script>
-<script src="./js/update_item.js"></script>
 
 <script>
     // Delete item function
