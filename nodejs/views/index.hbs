@@ -123,7 +123,7 @@
 
     // Populate Type dropdowns for Add and Update forms
     document.addEventListener('DOMContentLoaded', function() {
-        fetch('/types')
+        fetch('/item_types')
             .then(response => response.json())
             .then(types => {
                 const typeSelects = document.querySelectorAll('#input-Type_ID, #input-Type-update');

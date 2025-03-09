@@ -8,7 +8,7 @@ let app = express();            // We need to instantiate an express object to i
 const PORT        = 5020;                 // Set a port number at the top so it's easy to change in the future
 
 // Database
-let db = require('./database/db-connector')
+let db = require('./database/db-connector');
 
 // Use Handlebars
 const { engine } = require('express-handlebars');
@@ -17,16 +17,21 @@ app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the han
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
 // Configuring Express to handle json and form data
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-app.use(express.static('public'))
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static('public'));
 
 /*
     ROUTES
 */
 app.get('/', function(req, res) {  
     let query1 = "SELECT * FROM Items_In_House;";  // Define our query
-    let query2 = "SELECT * FROM Item_Types";
+    let query2 = "SELECT * FROM Item_Types;";
+    if (req.query.Name) {
+        let name = req.query.Name;
+        console.log(`Searching for: ${name}`);
+        query1 = `SELECT * FROM Items_In_House WHERE Name LIKE '%${name}%'`;
+    }
 
     db.pool.query(query1, function(error, rows1, fields) {  // Execute the first query
         if (error) {
