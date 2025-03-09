@@ -44,6 +44,14 @@
     </tbody>
 </table>
 
+<h2>Search for an Item</h2>
+<form id="search-item-html" method="GET" action="/">
+    <label for="input-Name-html-search">Search by Item Name: </label>
+    <input type="text" name="Name" id="input-Name-html-search">
+    <input type="submit" value="Search">
+    <a href="/"><button type="button">Reset</button></a>
+</form>
+
 <h2>Add a New Item</h2>
 <form id="add-item-form" method="POST" action="/add-item-form">
     <label for="input-Type_ID">Type ID: </label>
@@ -67,14 +75,6 @@
     <input type="date" name="input-Expiry_Date" id="input-Expiry_Date">
 
     <input type="submit" value="Submit">
-</form>
-
-<h2>Search for an Item</h2>
-<form id="search-item-html" method="GET" action="/">
-    <label for="input-Name-html-search">Search by Item Name: </label>
-    <input type="text" name="Name" id="input-Name-html-search">
-    <input type="submit" value="Search">
-    <a href="/"><button type="button">Reset</button></a>
 </form>
 
 <h2>Update an Item</h2>
