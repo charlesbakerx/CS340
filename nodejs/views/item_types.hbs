@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Item Types Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/">Items In Household</a> | 
+    <a href="item_types">Item Types</a>
+    <a href="shopping_lists">Shopping Lists</a>
+    <a href="items_needed">Manage Items Needed</a>
+    <a href="recipes">Manage Recipes</a>
+    <a href="ingredients">Manage Ingredients</a>
+</nav>
+
+<!-- Table to display item types -->
+<table id="ItemTypes-table">
+    <thead>
+        <tr>
+            {{#each types.[0]}}
+            <th>{{@key}}</th>
+            {{/each}}
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each types}}
+        <tr data-value={{this.Type_ID}}>
+            <td>{{this.Type_ID}}</td>
+            <td>{{this.Name}}</td>
+            <td><button onclick="editType({{this.Type_ID}})">Edit</button></td>
+            <td><button onclick="deleteType({{this.Type_ID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h2>Add a New Item Type</h2>
+<form id="add-type-form" method="POST" action="/add-type-form">
+    <label for="input-Name">Name: </label>
+    <input type="text" name="input-Name" id="input-Name">
+    <input type="submit" value="Submit">
+</form>
+
+<h2>Update an Item Type</h2>
+<form id="update-type-form-ajax">
+    <label for="input-Name">Item type name: </label>
+    <select name="input-Name" id="typeSelect">
+        <option value="">Select a Type</option>
+        {{#each types}}
+        <option value="{{this.Type_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-Type">New Name: </label>
+    <input type="text" name="input-Type" id="input-Type-update">
+    <input type="submit" value="Update">
+</form>
+
+<script src="./js/delete_type.js"></script>
+<script src="./js/update_type.js"></script>
+
+<script>
+    // Delete type function
+    function deleteType(typeID) {
+        fetch(`/delete-type/${typeID}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                document.querySelector(`tr[data-value="${typeID}"]`).remove();
+            } else {
+                console.error('Failed to delete item type.');
+            }
+        });
+    }
+
+    // Populate dropdown for Update form
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/types')
+            .then(response => response.json())
+            .then(types => {
+                const typeSelect = document.getElementById('typeSelect');
+                types.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.Type_ID;
+                    option.textContent = type.Name;
+                    typeSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
+</body>
+</html>

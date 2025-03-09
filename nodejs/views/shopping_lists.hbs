@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Lists Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/">Items In Household</a> | 
+    <a href="item_types">Item Types</a>
+    <a href="shopping_lists">Shopping Lists</a>
+    <a href="items_needed">Manage Items Needed</a>
+    <a href="recipes">Manage Recipes</a>
+    <a href="ingredients">Manage Ingredients</a>
+</nav>
+
+<!-- Table to display shopping lists -->
+<table id="ShoppingLists-table">
+    <thead>
+        <tr>
+            {{#each lists.[0]}}
+            <th>{{@key}}</th>
+            {{/each}}
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each lists}}
+        <tr data-value={{this.Shopping_List_ID}}>
+            <td>{{this.Shopping_List_ID}}</td>
+            <td>{{this.Name}}</td>
+            <td><button onclick="editList({{this.Shopping_List_ID}})">Edit</button></td>
+            <td><button onclick="deleteList({{this.Shopping_List_ID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h2>Add a New Shopping List</h2>
+<form id="add-list-form" method="POST" action="/add-list-form">
+    <label for="input-Name">Name: </label>
+    <input type="text" name="input-Name" id="input-Name">
+    <input type="submit" value="Submit">
+</form>
+
+<h2>Update a Shopping List</h2>
+<form id="update-list-form-ajax">
+    <label for="input-Name">Shopping list name: </label>
+    <select name="input-Name" id="listSelect">
+        <option value="">Select a List</option>
+        {{#each lists}}
+        <option value="{{this.Shopping_List_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-NewName">New Name: </label>
+    <input type="text" name="input-NewName" id="input-NewName-update">
+    <input type="submit" value="Update">
+</form>
+
+<script src="./js/delete_list.js"></script>
+<script src="./js/update_list.js"></script>
+
+<script>
+    // Delete list function
+    function deleteList(listID) {
+        fetch(`/delete-list/${listID}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                document.querySelector(`tr[data-value="${listID}"]`).remove();
+            } else {
+                console.error('Failed to delete shopping list.');
+            }
+        });
+    }
+
+    // Populate dropdown for Update form
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/shopping-lists')
+            .then(response => response.json())
+            .then(lists => {
+                const listSelect = document.getElementById('listSelect');
+                lists.forEach(list => {
+                    const option = document.createElement('option');
+                    option.value = list.Shopping_List_ID;
+                    option.textContent = list.Name;
+                    listSelect.appendChild(option);
+                });
+            });
+    });
+</script>
+
+</body>
+</html>

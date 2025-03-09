@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/">Items In Household</a> | 
+    <a href="item_types">Item Types</a>
+    <a href="shopping_lists">Shopping Lists</a>
+    <a href="items_needed">Manage Items Needed</a>
+    <a href="recipes">Manage Recipes</a>
+    <a href="ingredients">Manage Ingredients</a>
+</nav>
+
+<!-- Table to display recipes -->
+<table id="Recipes-table">
+    <thead>
+        <tr>
+            <th>Recipe ID</th>
+            <th>Name</th>
+            <th>Instructions</th>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each recipes}}
+        <tr data-recipe-id={{this.Recipe_ID}}>
+            <td>{{this.Recipe_ID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Instructions}}</td>
+            <td>{{this.Description}}</td>
+            <td><button onclick="editRecipe({{this.Recipe_ID}})">Edit</button></td>
+            <td><button onclick="deleteRecipe({{this.Recipe_ID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h2>Add a New Recipe</h2>
+<form id="add-recipe-form" method="POST" action="/add-recipe-form">
+    <label for="input-Name">Name: </label>
+    <input type="text" name="input-Name" id="input-Name">
+    <label for="input-Instructions">Instructions: </label>
+    <textarea name="input-Instructions" id="input-Instructions"></textarea>
+    <label for="input-Description">Description: </label>
+    <textarea name="input-Description" id="input-Description"></textarea>
+    <input type="submit" value="Submit">
+</form>
+
+<script src="./js/delete_recipe.js"></script>
+<script src="./js/update_recipe.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Ingredients</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/">Items In Household</a> | 
+    <a href="item_types">Item Types</a>
+    <a href="shopping_lists">Shopping Lists</a>
+    <a href="items_needed">Manage Items Needed</a>
+    <a href="recipes">Manage Recipes</a>
+    <a href="ingredients">Manage Ingredients</a>
+</nav>
+
+<!-- Table to display ingredients -->
+<table id="Ingredients-table">
+    <thead>
+        <tr>
+            <th>Item ID</th>
+            <th>Recipe ID</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each ingredients}}
+        <tr data-item-id={{this.Item_ID}} data-recipe-id={{this.Recipe_ID}}>
+            <td>{{this.Item_ID}}</td>
+            <td>{{this.Recipe_ID}}</td>
+            <td><button onclick="editIngredient({{this.Item_ID}}, {{this.Recipe_ID}})">Edit</button></td>
+            <td><button onclick="deleteIngredient({{this.Item_ID}}, {{this.Recipe_ID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h2>Add a New Ingredient</h2>
+<form id="add-ingredient-form" method="POST" action="/add-ingredient-form">
+    <label for="input-Item-ID">Item ID: </label>
+    <input type="text" name="input-Item-ID" id="input-Item-ID">
+    <label for="input-Recipe-ID">Recipe ID: </label>
+    <input type="text" name="input-Recipe-ID" id="input-Recipe-ID">
+    <input type="submit" value="Submit">
+</form>
+
+<script src="./js/delete_ingredient.js"></script>
+<script src="./js/update_ingredient.js"></script>
+
+</body>
+</html>

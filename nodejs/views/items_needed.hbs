@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Items Needed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+
+<nav>
+    <a href="/">Items In Household</a> | 
+    <a href="item_types">Item Types</a>
+    <a href="shopping_lists">Shopping Lists</a>
+    <a href="items_needed">Manage Items Needed</a>
+    <a href="recipes">Manage Recipes</a>
+    <a href="ingredients">Manage Ingredients</a>
+</nav>
+
+<!-- Table to display items needed -->
+<table id="ItemsNeeded-table">
+    <thead>
+        <tr>
+            <th>Item ID</th>
+            <th>Shopping List ID</th>
+            <th>Quantity</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each itemsNeeded}}
+        <tr data-item-id={{this.Item_ID}} data-list-id={{this.Shopping_List_ID}}>
+            <td>{{this.Item_ID}}</td>
+            <td>{{this.Shopping_List_ID}}</td>
+            <td>{{this.Quantity}}</td>
+            <td><button onclick="editItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}})">Edit</button></td>
+            <td><button onclick="deleteItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<h2>Add a New Item Needed</h2>
+<form id="add-item-needed-form" method="POST" action="/add-item-needed-form">
+    <label for="input-Item-ID">Item ID: </label>
+    <input type="text" name="input-Item-ID" id="input-Item-ID">
+    <label for="input-List-ID">Shopping List ID: </label>
+    <input type="text" name="input-List-ID" id="input-List-ID">
+    <label for="input-Quantity">Quantity: </label>
+    <input type="text" name="input-Quantity" id="input-Quantity">
+    <input type="submit" value="Submit">
+</form>
+
+<h2>Update an Item Needed</h2>
+<form id="update-item-needed-form">
+    <label for="input-Item-ID-update">Item ID: </label>
+    <input type="text" name="input-Item-ID-update" id="input-Item-ID-update">
+    <label for="input-List-ID-update">Shopping List ID: </label>
+    <input type="text" name="input-List-ID-update" id="input-List-ID-update">
+    <label for="input-Quantity-update">New Quantity: </label>
+    <input type="text" name="input-Quantity-update" id="input-Quantity-update">
+    <input type="submit" value="Update">
+</form>
+
+<script src="./js/delete_item_needed.js"></script>
+<script src="./js/update_item_needed.js"></script>
+
+</body>
+</html>

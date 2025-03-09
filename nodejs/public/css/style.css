@@ -1,0 +1,163 @@
+/* Global Variables */
+:root {
+    /* Color Palette */
+    --background-color: #121212;
+    --secondary-bg: #1B1F3B;
+    --primary-text: #E0E0E0;
+    --secondary-text: #A0A0A0;
+    --primary-accent: #4D9DE0;
+    --secondary-accent: #4A6FA5;
+    --success-color: #3B8C80;
+    --table-hover: #1b1f4b;
+    --card-bg: #2E2E2E;
+
+    /* Spacing and Sizing */
+    --padding-small: 8px;
+    --padding-medium: 12px;
+    --padding-large: 20px;
+
+    --font-size-small: 0.875rem; /* Small text (e.g., labels, buttons) */
+    --font-size-base: 1rem;     /* Base font size for body */
+    --font-size-large: 1.25rem; /* Larger headers/subsections */
+
+    --border-radius: 5px;       /* Consistent corner rounding */
+    --box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadowing */
+}
+
+/* Reset */
+body, h1, h2, h3, p, ul, ol, table, form {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+/* General Body Styling */
+body {
+    background-color: var(--background-color);
+    color: var(--primary-text);
+    line-height: 1.6;
+    padding: var(--padding-large);
+    width: 85%;
+    margin: auto;
+}
+
+/* Header Styling */
+h1, h2, h3 {
+    color: var(--primary-text);
+    margin-bottom: var(--padding-medium);
+    border-bottom: 2px solid var(--primary-accent);
+    padding-bottom: var(--padding-small);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--padding-large);
+    background-color: var(--secondary-bg);
+    box-shadow: var(--box-shadow);
+}
+
+thead {
+    background-color: var(--secondary-bg);
+    color: var(--primary-text);
+}
+
+th, td {
+    border: 1px solid var(--secondary-accent);
+    text-align: center;
+    padding: 4px;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--card-bg);
+}
+
+tbody tr:hover {
+    background-color: var(--table-hover);
+}
+
+/* Button Styling */
+button,
+input[type="submit"],
+a button {
+    background-color: var(--primary-accent);
+    color: var(--primary-text);
+    border: 1px solid var(--secondary-accent);
+    padding: var(--padding-medium) var(--padding-large);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"], a button {
+    width: 100%;
+    margin-top: var(--padding-small);
+}
+
+button:hover,
+input[type="submit"]:hover,
+a button:hover {
+    background-color: var(--success-color);
+}
+
+button.delete {
+    background-color: var(--primary-accent);
+}
+
+button.delete:hover {
+    background-color: var(--success-color);
+}
+
+/* Form Styling */
+form {
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: var(--padding-large);
+    background-color: var(--secondary-bg);
+    padding: var(--padding-medium);
+    border: 1px solid var(--secondary-accent);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: var(--padding-small);
+    color: var(--secondary-text);
+}
+
+input, select, textarea {
+    background: var(--card-bg);
+    color: var(--primary-text);
+    padding: var(--padding-small);
+    margin-right: var(--padding-small);
+    border: 1px solid var(--secondary-accent);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-small);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 5px rgba(42, 157, 143, 0.5);
+}
+
+/* Link Styling */
+a {
+    text-decoration: none;
+    color: var(--primary-accent);
+}
+
+a:hover {
+    text-decoration: underline;
+}
