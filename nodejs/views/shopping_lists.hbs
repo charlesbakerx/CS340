@@ -49,22 +49,19 @@
 </form>
 
 <h2>Update a Shopping List</h2>
-<form id="update-list-form-ajax">
-    <label for="input-Name">Shopping list name: </label>
-    <select name="input-Name" id="listSelect">
+<form id="update-list-form">
+    <label for="input-Name-update">Shopping list name: </label>
+    <select name="input-Name-update" id="input-Name-update">
         <option value="">Select a List</option>
         {{#each lists}}
         <option value="{{this.Shopping_List_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
-    <label for="input-NewName">New Name: </label>
-    <input type="text" name="input-NewName" id="input-NewName-update">
-    <input type="submit" value="Update">
+    <label for="input-Name-new">New Name: </label>
+    <input type="text" name="input-Name-new" id="input-Name-new">
+    <input type="submit" value="Update" onclick="updateList()">
 </form>
-
-<script src="./js/delete_list.js"></script>
-<script src="./js/update_list.js"></script>
 
 <script>
     // Delete list function
@@ -76,6 +73,38 @@
                 document.querySelector(`tr[data-value="${listID}"]`).remove();
             } else {
                 console.error('Failed to delete shopping list.');
+            }
+        });
+    }
+
+    function editList(typeID) {
+        const typeSelect = document.querySelector('#input-Name-update');
+        const newNameField = document.querySelector('#input-Name-new');
+        typeSelect.value = typeID;
+        newNameField.scrollIntoView({ behavior: 'smooth', block: 'center'});
+        newNameField.focus({ preventScroll: true});
+
+    }
+
+    // Update item type function
+    function updateList() {
+        const data = {
+            Shopping_List_ID: document.querySelector('#input-Name-update').value,
+            Name: document.querySelector('#input-Name-new').value
+        }
+
+        fetch('/update-list-form', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok) {
+                alert('List updated successfully.');
+                fetch('/item_types');
+            } else {
+                alert('Failed to list.');
             }
         });
     }

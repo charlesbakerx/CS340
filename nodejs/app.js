@@ -397,15 +397,17 @@ app.put('/update-type-form', function(req, res, next) {
 });
 
 // Route to update a shopping list
-app.put('/update-list/:id', function(req, res) {
-    let Shopping_List_ID = parseInt(req.params.id);
-    let newName = req.body.newName;
+app.put('/update-list-form', function(req, res) {
+    let data = req.body;
+
+    let Shopping_List_ID = data.Shopping_List_ID;
+    let Name = data.Name;
 
     let queryUpdateList = `UPDATE Shopping_Lists SET Name = ? WHERE Shopping_List_ID = ?`;
     let selectList = `SELECT * FROM Shopping_Lists WHERE Shopping_List_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateList, [newName, Shopping_List_ID], function(error, rows, fields) {
+    db.pool.query(queryUpdateList, [Name, Shopping_List_ID], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
