@@ -54,7 +54,7 @@
 
 <h2>Add a New Item</h2>
 <form id="add-item-form" method="POST" action="/add-item-form">
-    <label for="input-Type_ID">Type ID: </label>
+    <label for="input-Type_ID">Item Type: </label>
     <select name="input-Type_ID" id="input-Type_ID">
         <option value="">Select an Item Type</option>
         {{#each type}}
@@ -78,33 +78,33 @@
 </form>
 
 <h2>Update an Item</h2>
-<form id="update-item-form-ajax">
-    <label for="input-Name">Item name: </label>
-    <select name="input-Name" id="mySelect">
+<form id="update-item-form">
+    <label for="input-Name-update">Item name: </label>
+    <select name="input-Name-update" id="input-Name-update">
         <option value="">Select an Item</option>
         {{#each data}}
         <option value="{{this.Item_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
-    <label for="input-Type">Item Type: </label>
-    <select name="input-Type" id="input-Type-update">
+    <label for="input-Type-update">Item Type: </label>
+    <select name="input-Type-update" id="input-Type-update">
         <option value="">Select a Type</option>
-        {{#each Item_Types}}
+        {{#each type}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
-    <label for="input-Quantity">Quantity of Item: </label>
-    <input type="number" name="input-Quantity" id="input-Quantity">
+    <label for="input-Quantity-update">Quantity of Item: </label>
+    <input type="number" name="input-Quantity-update" id="input-Quantity-update">
 
-    <label for="input-Unit">Unit to measure the item: </label>
-    <input type="text" name="input-Unit" id="input-Unit">
+    <label for="input-Unit-update">Unit to measure the item: </label>
+    <input type="text" name="input-Unit-update" id="input-Unit-update">
 
-    <label for="input-Expiry_Date">Date Item Expires if it is perishable: </label>
-    <input type="date" name="input-Expiry_Date" id="input-Expiry_Date">
+    <label for="input-Expiry_Date-update">Date Item Expires if it is perishable: </label>
+    <input type="date" name="input-Expiry_Date-update" id="input-Expiry_Date-update">
 
-    <input type="submit" value="Update">
+    <input type="submit" value="Update" onclick="updateItem()">
 </form>
 
 <script>
@@ -117,6 +117,32 @@
                 document.querySelector(`tr[data-value="${itemID}"]`).remove();
             } else {
                 console.error('Failed to delete item.');
+            }
+        });
+    }
+
+    // Update item function
+    function updateItem() {
+        const data = {
+            Item_ID: document.querySelector('#input-Name-update').value,
+            Type_ID: document.querySelector('#input-Type-update').value,
+            Quantity: document.querySelector('#input-Quantity-update').value,
+            Unit: document.querySelector('#input-Unit-update').value,
+            Expiry_Date: document.querySelector('#input-Expiry_Date-update').value
+        }
+
+        fetch('/update-item-form', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then((response) => {
+            if (response.ok) {
+                alert('Item updated successfully.');
+                fetch('/');
+            } else {
+                alert('Failed to update item.');
             }
         });
     }

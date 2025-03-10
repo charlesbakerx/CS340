@@ -325,32 +325,29 @@ app.delete('/delete-ingredient/:itemID/:recipeID', function(req, res) {
     });
 });
 
-// Update route
-app.put('/put-item-ajax', function(req, res, next) {
+// Update item route
+app.put('/update-item-form', function(req, res, next) {
     let data = req.body;
+    let Expiry_Date = parseInt(data.Expiry_Date);
+    if (isNaN(Expiry_Date)) {
+        Expiry_Date = 'NULL';
+    }
 
-    let Type = parseInt(data.Type);
-    let Item = parseInt(data.Item);
-
-    let queryUpdateType = `UPDATE Items_In_House SET Type_ID = ? WHERE Item_ID = ?`;
-    let selectType = `SELECT * FROM Item_Types WHERE Type_ID = ?`;
+    let queryUpdateItem = `UPDATE Items_In_House SET ` +
+        `Type_ID = ${data.Type_ID},` +
+        `Quantity = ${data.Quantity},` +
+        `Unit = "${data.Unit}",` +
+        `Expiry_Date = ${Expiry_Date} ` +
+        `WHERE Item_ID = ${data.Item_ID}`;
 
     // Run the 1st query
-    db.pool.query(queryUpdateType, [Type, Item], function(error, rows, fields) {
+    db.pool.query(queryUpdateItem, function(error, rows, fields) {
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
             res.sendStatus(400);
         } else {
-            // Run the second query
-            db.pool.query(selectType, [Type], function(error, rows, fields) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    res.send(rows);
-                }
-            });
+            res.send(rows);
         }
     });
 });
