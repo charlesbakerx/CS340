@@ -367,7 +367,7 @@ app.put('/update-item-form', function(req, res, next) {
 });
 
 // Update route for item types
-app.put('/put-type-ajax', function(req, res, next) {
+app.put('/update-type-form', function(req, res, next) {
     let data = req.body;
 
     let Type_ID = parseInt(data.Type_ID);

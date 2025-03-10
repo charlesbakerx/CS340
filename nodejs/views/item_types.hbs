@@ -49,18 +49,18 @@
 </form>
 
 <h2>Update an Item Type</h2>
-<form id="update-type-form-ajax">
-    <label for="input-Name">Item type name: </label>
-    <select name="input-Name" id="typeSelect">
+<form id="update-type-form">
+    <label for="input-Name-update">Item type name: </label>
+    <select name="input-Name-update" id="input-Name-update">
         <option value="">Select a Type</option>
         {{#each types}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
-    <label for="input-Type">New Name: </label>
-    <input type="text" name="input-Type" id="input-Type-update">
-    <input type="submit" value="Update">
+    <label for="input-Name-new">New Name: </label>
+    <input type="text" name="input-Name-new" id="input-Name-new">
+    <input type="submit" value="Update" onclick="updateType()">
 </form>
 
 <script>
@@ -73,6 +73,38 @@
                 document.querySelector(`tr[data-value="${typeID}"]`).remove();
             } else {
                 console.error('Failed to delete item type.');
+            }
+        });
+    }
+
+    function editType(typeID) {
+        const typeSelect = document.querySelector('#input-Name-update');
+        const newNameField = document.querySelector('#input-Name-new');
+        typeSelect.value = typeID;
+        newNameField.scrollIntoView({ behavior: 'smooth', block: 'center'});
+        newNameField.focus({ preventScroll: true});
+
+    }
+
+    // Update item type function
+    function updateType() {
+        const data = {
+            Type_ID: document.querySelector('#input-Name-update').value,
+            Name: document.querySelector('#input-Name-new').value
+        }
+
+        fetch('/update-type-form', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok) {
+                alert('Item type updated successfully.');
+                fetch('/item_types');
+            } else {
+                alert('Failed to update item type.');
             }
         });
     }
