@@ -36,7 +36,7 @@
             <td>{{this.Name}}</td>
             <td>{{this.Quantity}}</td>
             <td>{{this.Unit}}</td>
-            <td>{{this.Expiry_Date}}</td>
+            <td>{{dateFormat this.Expiry_Date 'MMMM DD, YYYY'}}</td>
             <td><button onclick="editItem({
                     Item_ID: '{{this.Item_ID}}',
                     Type_ID: '{{this.Type_ID}}',

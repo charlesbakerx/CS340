@@ -13,6 +13,18 @@ let db = require('./database/db-connector');
 // Use Handlebars
 const { engine } = require('express-handlebars');
 let exphbs = require('express-handlebars');     // Import express-handlebars
+
+/* Helper function to format dates */
+const moment = require('moment');
+const Handlebars = exphbs.create().handlebars
+Handlebars.registerHelper('dateFormat', function(date, format) {
+    if (date == null) {
+        return '';
+    }
+    return moment(date).format(format);
+});
+/* ------------------------------ */
+
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
@@ -123,8 +135,8 @@ app.post('/add-item-form', function(req, res) {
     let data = req.body;
 
     // Capture NULL values
-    let Expiry_Date = parseInt(data['input-Expiry_Date']);
-    if (isNaN(Expiry_Date)) {
+    let Expiry_Date = data['input-Expiry_Date'];
+    if (Expiry_Date.length === 0) {
         Expiry_Date = 'NULL';
     }
 
@@ -328,8 +340,9 @@ app.delete('/delete-ingredient/:itemID/:recipeID', function(req, res) {
 // Update item route
 app.put('/update-item-form', function(req, res, next) {
     let data = req.body;
-    let Expiry_Date = parseInt(data.Expiry_Date);
-    if (isNaN(Expiry_Date)) {
+    let Expiry_Date = data.Expiry_Date;
+    console.log(`Expiry date is ${Expiry_Date}`);
+    if (Expiry_Date.length === 0) {
         Expiry_Date = 'NULL';
     }
 
@@ -337,9 +350,10 @@ app.put('/update-item-form', function(req, res, next) {
         `Type_ID = ${data.Type_ID},` +
         `Quantity = ${data.Quantity},` +
         `Unit = "${data.Unit}",` +
-        `Expiry_Date = ${Expiry_Date} ` +
+        `Expiry_Date = "${Expiry_Date}" ` +
         `WHERE Item_ID = ${data.Item_ID}`;
 
+    console.log(`SQL Query: ${queryUpdateItem}`);
     // Run the 1st query
     db.pool.query(queryUpdateItem, function(error, rows, fields) {
         if (error) {
