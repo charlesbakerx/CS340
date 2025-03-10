@@ -37,7 +37,13 @@
             <td>{{this.Quantity}}</td>
             <td>{{this.Unit}}</td>
             <td>{{this.Expiry_Date}}</td>
-            <td><button onclick="editItem({{this.Item_ID}})">Edit</button></td>
+            <td><button onclick="editItem({
+                    Item_ID: '{{this.Item_ID}}',
+                    Type_ID: '{{this.Type_ID}}',
+                    Quantity: '{{this.Quantity}}',
+                    Unit: '{{this.Unit}}',
+                    Expiry_Date: '{{this.Expiry_Date}}'
+            })">Edit</button></td>
             <td><button onclick="deleteItem({{this.Item_ID}})">Delete</button></td>
         </tr>
         {{/each}}
@@ -145,6 +151,20 @@
                 alert('Failed to update item.');
             }
         });
+    }
+
+    function editItem(item) {
+        const itemField = document.querySelector('#input-Name-update');
+        const itemTypeField = document.querySelector('#input-Type-update');
+        const quantityField = document.querySelector('#input-Quantity-update');
+        const unitField = document.querySelector('#input-Unit-update');
+        const expiryDateField = document.querySelector('#input-Expiry_Date-update');
+        itemField.value = item.Item_ID;
+        itemTypeField.value = item.Type_ID;
+        quantityField.value = item.Quantity;
+        unitField.value = item.Unit;
+        expiryDateField.value = item.Expiry_Date;
+        itemField.scrollIntoView({ behavior: 'smooth', block: 'center'})
     }
 
     // Populate Type dropdowns for Add and Update forms
