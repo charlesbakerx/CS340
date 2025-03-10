@@ -22,7 +22,10 @@
     <thead>
         <tr>
             {{#each data.[0]}}
-            <th>{{@key}}</th>
+              {{#if @first}}
+              {{else}}
+                <th>{{@key}}</th>
+              {{/if}}
             {{/each}}
             <th>Edit</th>
             <th>Delete</th>
@@ -32,7 +35,7 @@
         {{#each data}}
         <tr data-value={{this.Item_ID}}>
             <td>{{this.Item_ID}}</td>
-            <td>{{this.Type_ID}}</td>
+            <td>{{this.Type}}</td>
             <td>{{this.Name}}</td>
             <td>{{this.Quantity}}</td>
             <td>{{this.Unit}}</td>

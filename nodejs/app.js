@@ -37,7 +37,11 @@ app.use(express.static('public'));
     ROUTES
 */
 app.get('/', function(req, res) {  
-    let query1 = "SELECT * FROM Items_In_House;";  // Define our query
+    let query1 = "SELECT Items_In_House.Type_ID, Items_In_House.Item_ID, " + 
+      "Item_Types.Name AS Type, Items_In_House.Name, Items_In_House.Quantity, " +
+      "Items_In_House.Unit, Items_In_House.Expiry_Date " +
+      "FROM Items_In_House " +
+      "INNER JOIN Item_Types ON Items_In_House.Type_ID = Item_Types.Type_ID";
     let query2 = "SELECT * FROM Item_Types;";
     if (req.query.Name) {
         let name = req.query.Name;
