@@ -5,12 +5,11 @@ const database_name = process.env.DATABASE_NAME;
 const database_user = process.env.DATABASE_USER;
 const database_password = process.env.DATABASE_PASSWORD;
 // Get an instance of mysql we can use in the app
-var mysql = require('mysql')
-const {configDotenv} = require("dotenv");
+const mysql = require('mysql')
 
 // Create a 'connection pool' using the provided credentials
 
-var pool = mysql.createPool({
+const pool = mysql.createPool({
     connectionLimit : 10,
     host            : database_url,
     user            : database_user,
@@ -18,5 +17,5 @@ var pool = mysql.createPool({
     database        : database_name
 })
 
-// Export it for use in our applicaiton
+// Export it for use in our application
 module.exports.pool = pool;
