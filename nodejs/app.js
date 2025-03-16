@@ -168,7 +168,7 @@ app.post('/add-type-form', function(req, res) {
 
 app.post('/add-list-form', function(req, res) {
     let data = req.body;
-    let query = `INSERT INTO Shopping_Lists (Name) VALUES ('${data['input-Name']}')`;
+    let query = `INSERT INTO Shopping_Lists (Name) VALUES ("${data['input-Name']}")`;
 
     db.pool.query(query, function(error) {
         if (error) {
