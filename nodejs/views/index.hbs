@@ -45,7 +45,7 @@
                     Type_ID: '{{this.Type_ID}}',
                     Quantity: '{{this.Quantity}}',
                     Unit: '{{this.Unit}}',
-                    Expiry_Date: '{{this.Expiry_Date}}'
+                    Expiry_Date: '{{dateFormat this.Expiry_Date 'MM/DD/YYYY'}}'
             })">Edit</button></td>
             <td><button onclick="deleteItem({{this.Item_ID}})">Delete</button></td>
         </tr>
@@ -64,21 +64,21 @@
 <h2>Add a New Item</h2>
 <form id="add-item-form" method="POST" action="/add-item-form">
     <label for="input-Type_ID">Item Type: </label>
-    <select name="input-Type_ID" id="input-Type_ID">
-        <option value="">Select an Item Type</option>
+    <select name="input-Type_ID" id="input-Type_ID" required>
+        <option value="" disabled selected>Select an Item Type</option>
         {{#each type}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
     <label for="input-Name">Name: </label>
-    <input type="text" name="input-Name" id="input-Name">
+    <input type="text" name="input-Name" id="input-Name" required pattern="\S(.*\S)?" title="Item name cannot begin or end with a space">
 
     <label for="input-Quantity">Quantity of Item: </label>
-    <input type="number" name="input-Quantity" id="input-Quantity">
+    <input type="number" name="input-Quantity" id="input-Quantity" required>
 
     <label for="input-Unit">Unit to measure the item: </label>
-    <input type="text" name="input-Unit" id="input-Unit">
+    <input type="text" name="input-Unit" id="input-Unit" required pattern="\S(.*\S)?" title="Item unit cannot begin or end with a space">
 
     <label for="input-Expiry_Date">Date Item Expires if it is perishable: </label>
     <input type="date" name="input-Expiry_Date" id="input-Expiry_Date">
@@ -98,17 +98,17 @@
 
     <label for="input-Type-update">Item Type: </label>
     <select name="input-Type-update" id="input-Type-update">
-        <option value="">Select a Type</option>
+        <option value="" disabled selected>Select a Type</option>
         {{#each type}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
     <label for="input-Quantity-update">Quantity of Item: </label>
-    <input type="number" name="input-Quantity-update" id="input-Quantity-update">
+    <input type="number" name="input-Quantity-update" id="input-Quantity-update" required>
 
     <label for="input-Unit-update">Unit to measure the item: </label>
-    <input type="text" name="input-Unit-update" id="input-Unit-update">
+    <input type="text" name="input-Unit-update" id="input-Unit-update" required pattern="\S(.*\S)?" title="Item unit cannot begin or end with a space">
 
     <label for="input-Expiry_Date-update">Date Item Expires if it is perishable: </label>
     <input type="date" name="input-Expiry_Date-update" id="input-Expiry_Date-update">
@@ -166,7 +166,10 @@
         itemTypeField.value = item.Type_ID;
         quantityField.value = item.Quantity;
         unitField.value = item.Unit;
-        expiryDateField.value = item.Expiry_Date;
+        /* We have to split the expiryDate into month, day, and year element in order to pre-fill the field */
+        let m, d, y;
+        [m, d, y] = item.Expiry_Date.split('/');
+        expiryDateField.value = `${y}-${m}-${d}`;
         itemField.scrollIntoView({ behavior: 'smooth', block: 'center'})
     }
 
