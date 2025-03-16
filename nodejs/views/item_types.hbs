@@ -35,7 +35,7 @@
             <td>{{this.Type_ID}}</td>
             <td>{{this.Name}}</td>
             <td><button onclick="editType({{this.Type_ID}})">Edit</button></td>
-            <td><button onclick="deleteType({{this.Type_ID}})">Delete</button></td>
+            <td><button onclick="deleteType({{this.Type_ID}}, '{{this.Name}}')">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -65,8 +65,8 @@
 
 <script>
     // Delete type function
-    function deleteType(typeID) {
-        if (!confirm('Are you sure you want to delete this item type?')) {
+    function deleteType(typeID, typeName) {
+        if (!confirm(`Are you sure you want to delete ${typeName}? \nThis action cannot be undone.`)) {
             return;
         }
         fetch(`/delete-type/${typeID}`, {

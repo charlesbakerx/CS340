@@ -47,7 +47,7 @@
                     Unit: '{{this.Unit}}',
                     Expiry_Date: '{{dateFormat this.Expiry_Date 'MM/DD/YYYY'}}'
             })">Edit</button></td>
-            <td><button onclick="deleteItem({{this.Item_ID}})">Delete</button></td>
+            <td><button onclick="deleteItem({{this.Item_ID}}, '{{this.Name}}')">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -118,7 +118,10 @@
 
 <script>
     // Delete item function
-    function deleteItem(itemID) {
+    function deleteItem(itemID, itemName) {
+        if (!confirm(`Are you sure you want to delete ${itemName}?\nThis action cannot be undone.`)) {
+            return;
+        }
         fetch(`/delete-item/${itemID}`, {
             method: 'DELETE'
         }).then(response => {
