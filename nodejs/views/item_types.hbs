@@ -44,28 +44,31 @@
 <h2>Add a New Item Type</h2>
 <form id="add-type-form" method="POST" action="/add-type-form">
     <label for="input-Name">Name: </label>
-    <input type="text" name="input-Name" id="input-Name">
+    <input type="text" name="input-Name" id="input-Name" required pattern="\S(.*\S)?" title="Name cannot begin or end with a space.">
     <input type="submit" value="Submit">
 </form>
 
 <h2>Update an Item Type</h2>
-<form id="update-type-form">
+<form id="update-type-form" onsubmit="updateType()">
     <label for="input-Name-update">Item type name: </label>
     <select name="input-Name-update" id="input-Name-update">
-        <option value="">Select a Type</option>
+        <option value="" disabled selected>Select a Type</option>
         {{#each types}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
     </select>
 
     <label for="input-Name-new">New Name: </label>
-    <input type="text" name="input-Name-new" id="input-Name-new">
-    <input type="submit" value="Update" onclick="updateType()">
+    <input type="text" name="input-Name-new" id="input-Name-new" required pattern="\S(.*\S)?" title="Name cannot begin or end with a space.">
+    <input type="submit" value="Update">
 </form>
 
 <script>
     // Delete type function
     function deleteType(typeID) {
+        if (!confirm('Are you sure you want to delete this item type?')) {
+            return;
+        }
         fetch(`/delete-type/${typeID}`, {
             method: 'DELETE'
         }).then(response => {
