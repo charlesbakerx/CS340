@@ -1,20 +1,19 @@
-// App.js
-
-/*
-    SETUP
-*/
-let express = require('express');   // We are using the express library for the web server
-let app = express();            // We need to instantiate an express object to interact with the server in our code
-const PORT        = 5020;                 // Set a port number at the top so it's easy to change in the future
-
-// Database
-let db = require('./database/db-connector');
-
-// Use Handlebars
+/*  Express and Handlebars Setup   */
+const express = require('express');   // We are using the express library for the web server
+const app     = express();            // We need to instantiate an express object to interact with the server in our code
+const PORT  = 5020;                 // Set a port number at the top so it's easy to change in the future
 const { engine } = require('express-handlebars');
-let exphbs = require('express-handlebars');     // Import express-handlebars
+const exphbs = require('express-handlebars');     // Import express-handlebars
+app.engine('.hbs',
+    engine({extname: ".hbs"}));         // Create an instance of the handlebars engine to process templates
+app.set('view engine', '.hbs');                // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
 
-/* Helper function to format dates */
+// Configuring Express to handle json and form data
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static('public'));
+
+/* Handlebars helper function to format dates */
 const moment = require('moment');
 const Handlebars = exphbs.create().handlebars
 Handlebars.registerHelper('dateFormat', function(date, format) {
@@ -23,19 +22,12 @@ Handlebars.registerHelper('dateFormat', function(date, format) {
     }
     return moment(date).format(format);
 });
-/* ------------------------------ */
+/* End of Setup */
 
-app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
-app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+// Database
+let db = require('./database/db-connector');
 
-// Configuring Express to handle json and form data
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static('public'));
-
-/*
-    ROUTES
-*/
+/*  ROUTES  */
 app.get('/', function(req, res) {  
     let query1 = "SELECT Items_In_House.Type_ID, Items_In_House.Item_ID, " + 
       "Item_Types.Name AS Type, Items_In_House.Name, Items_In_House.Quantity, " +
@@ -49,14 +41,14 @@ app.get('/', function(req, res) {
         query1 = `SELECT * FROM Items_In_House WHERE Name LIKE '%${name}%'`;
     }
 
-    db.pool.query(query1, function(error, rows1, fields) {  // Execute the first query
+    db.pool.query(query1, function(error, rows1) {  // Execute the first query
         if (error) {
             console.log(error);
             res.sendStatus(400);
             return;
         }
 
-        db.pool.query(query2, function(error, rows2, fields) {  // Execute the second query
+        db.pool.query(query2, function(error, rows2) {  // Execute the second query
             if (error) {
                 console.log(error);
                 res.sendStatus(400);
@@ -71,7 +63,7 @@ app.get('/', function(req, res) {
 app.get('/item_types', function(req, res) {
     let query = "SELECT * FROM Item_Types;";  // Define our query
 
-    db.pool.query(query, function(error, rows, fields) {  // Execute the query
+    db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -85,7 +77,7 @@ app.get('/item_types', function(req, res) {
 app.get('/shopping_lists', function(req, res) {
     let query = "SELECT * FROM Shopping_Lists;";  // Define our query
 
-    db.pool.query(query, function(error, rows, fields) {  // Execute the query
+    db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -98,7 +90,7 @@ app.get('/shopping_lists', function(req, res) {
 app.get('/items_needed', function(req, res) {
     let query = "SELECT * FROM Items_Needed;";  // Define our query
 
-    db.pool.query(query, function(error, rows, fields) {  // Execute the query
+    db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -111,7 +103,7 @@ app.get('/items_needed', function(req, res) {
 app.get('/recipes', function(req, res) {
     let query = "SELECT * FROM Recipes;";  // Define our query
 
-    db.pool.query(query, function(error, rows, fields) {  // Execute the query
+    db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -124,7 +116,7 @@ app.get('/recipes', function(req, res) {
 app.get('/ingredients', function(req, res) {
     let query = "SELECT * FROM Ingredients;";  // Define our query
 
-    db.pool.query(query, function(error, rows, fields) {  // Execute the query
+    db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -146,7 +138,7 @@ app.post('/add-item-form', function(req, res) {
 
     // Create the query and run it on the database
     let query1 = `INSERT INTO Items_In_House (Item_ID, Type_ID, Name, Quantity, Unit, Expiry_Date) VALUES ('${data['input-Item_ID']}', '${data['input-Type_ID']}','${data['input-Name']}','${data['input-Quantity']}','${data['input-Unit']}' ,${Expiry_Date})`;
-    db.pool.query(query1, function(error, rows, fields) {
+    db.pool.query(query1, function(error) {
         // Check to see if there was an error
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
@@ -164,7 +156,7 @@ app.post('/add-type-form', function(req, res) {
     let data = req.body;
     let query = `INSERT INTO Item_Types (Name) VALUES ('${data['input-Name']}')`;
 
-    db.pool.query(query, function(error, rows, fields) {
+    db.pool.query(query, function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -178,7 +170,7 @@ app.post('/add-list-form', function(req, res) {
     let data = req.body;
     let query = `INSERT INTO Shopping_Lists (Name) VALUES ('${data['input-Name']}')`;
 
-    db.pool.query(query, function(error, rows, fields) {
+    db.pool.query(query, function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -192,7 +184,7 @@ app.post('/add-item-needed-form', function(req, res) {
     let data = req.body;
     let query = `INSERT INTO Items_Needed (Item_ID, Shopping_List_ID, Quantity) VALUES ('${data['input-Item-ID']}', '${data['input-List-ID']}', '${data['input-Quantity']}')`;
 
-    db.pool.query(query, function(error, rows, fields) {
+    db.pool.query(query, function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -206,7 +198,7 @@ app.post('/add-recipe-form', function(req, res) {
     let data = req.body;
     let query = `INSERT INTO Recipes (Name, Instructions, Description) VALUES ('${data['input-Name']}', '${data['input-Instructions']}', '${data['input-Description']}')`;
 
-    db.pool.query(query, function(error, rows, fields) {
+    db.pool.query(query, function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -220,7 +212,7 @@ app.post('/add-ingredient-form', function(req, res) {
     let data = req.body;
     let query = `INSERT INTO Ingredients (Item_ID, Recipe_ID) VALUES ('${data['input-Item-ID']}', '${data['input-Recipe-ID']}')`;
 
-    db.pool.query(query, function(error, rows, fields) {
+    db.pool.query(query, function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -231,13 +223,13 @@ app.post('/add-ingredient-form', function(req, res) {
 });
 
 // Delete route 
-app.delete('/delete-item-ajax/', function(req, res, next) {
+app.delete('/delete-item-ajax/', function(req, res) {
     let data = req.body;
     let Item_ID = parseInt(data.id);
     let deleteItem_In_House = `DELETE FROM Items_In_House WHERE Item_ID = ?`;
 
     // Run the query
-    db.pool.query(deleteItem_In_House, [Item_ID], function(error, rows, fields) {
+    db.pool.query(deleteItem_In_House, [Item_ID], function(error) {
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
@@ -254,7 +246,7 @@ app.delete('/delete-type/:id', function(req, res) {
     let Type_ID = parseInt(req.params.id);
     let query = `DELETE FROM Item_Types WHERE Type_ID = ?`;
 
-    db.pool.query(query, [Type_ID], function(error, rows, fields) {
+    db.pool.query(query, [Type_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -269,7 +261,7 @@ app.delete('/delete-list/:id', function(req, res) {
     let Shopping_List_ID = parseInt(req.params.id);
     let query = `DELETE FROM Shopping_Lists WHERE Shopping_List_ID = ?`;
 
-    db.pool.query(query, [Shopping_List_ID], function(error, rows, fields) {
+    db.pool.query(query, [Shopping_List_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -284,7 +276,7 @@ app.delete('/delete-item/:itemID', function(req, res) {
     let Item_ID = parseInt(req.params.itemID);
     let query = `DELETE FROM Items_In_House WHERE Item_ID = ?`;
 
-    db.pool.query(query, [Item_ID], function(error, rows, fields) {
+    db.pool.query(query, [Item_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -300,7 +292,7 @@ app.delete('/delete-item-needed/:itemID/:listID', function(req, res) {
     let Shopping_List_ID = parseInt(req.params.listID);
     let query = `DELETE FROM Items_Needed WHERE Item_ID = ? AND Shopping_List_ID = ?`;
 
-    db.pool.query(query, [Item_ID, Shopping_List_ID], function(error, rows, fields) {
+    db.pool.query(query, [Item_ID, Shopping_List_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -315,7 +307,7 @@ app.delete('/delete-recipe/:id', function(req, res) {
     let Recipe_ID = parseInt(req.params.id);
     let query = `DELETE FROM Recipes WHERE Recipe_ID = ?`;
 
-    db.pool.query(query, [Recipe_ID], function(error, rows, fields) {
+    db.pool.query(query, [Recipe_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -331,7 +323,7 @@ app.delete('/delete-ingredient/:itemID/:recipeID', function(req, res) {
     let Recipe_ID = parseInt(req.params.recipeID);
     let query = `DELETE FROM Ingredients WHERE Item_ID = ? AND Recipe_ID = ?`;
 
-    db.pool.query(query, [Item_ID, Recipe_ID], function(error, rows, fields) {
+    db.pool.query(query, [Item_ID, Recipe_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -342,7 +334,7 @@ app.delete('/delete-ingredient/:itemID/:recipeID', function(req, res) {
 });
 
 // Update item route
-app.put('/update-item-form', function(req, res, next) {
+app.put('/update-item-form', function(req, res) {
     let data = req.body;
     let Expiry_Date = data.Expiry_Date;
     console.log(`Expiry date is ${Expiry_Date}`);
@@ -359,7 +351,7 @@ app.put('/update-item-form', function(req, res, next) {
 
     console.log(`SQL Query: ${queryUpdateItem}`);
     // Run the 1st query
-    db.pool.query(queryUpdateItem, function(error, rows, fields) {
+    db.pool.query(queryUpdateItem, function(error, rows) {
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
@@ -371,7 +363,7 @@ app.put('/update-item-form', function(req, res, next) {
 });
 
 // Update route for item types
-app.put('/update-type-form', function(req, res, next) {
+app.put('/update-type-form', function(req, res) {
     let data = req.body;
 
     let Type_ID = parseInt(data.Type_ID);
@@ -381,14 +373,14 @@ app.put('/update-type-form', function(req, res, next) {
     let selectType = `SELECT * FROM Item_Types WHERE Type_ID = ?`;
 
     // Run the 1st query
-    db.pool.query(queryUpdateType, [Name, Type_ID], function(error, rows, fields) {
+    db.pool.query(queryUpdateType, [Name, Type_ID], function(error) {
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
             res.sendStatus(400);
         } else {
             // Run the second query
-            db.pool.query(selectType, [Type_ID], function(error, rows, fields) {
+            db.pool.query(selectType, [Type_ID], function(error, rows) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
@@ -411,13 +403,13 @@ app.put('/update-list-form', function(req, res) {
     let selectList = `SELECT * FROM Shopping_Lists WHERE Shopping_List_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateList, [Name, Shopping_List_ID], function(error, rows, fields) {
+    db.pool.query(queryUpdateList, [Name, Shopping_List_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
             // Run the select query to return the updated list
-            db.pool.query(selectList, [Shopping_List_ID], function(error, rows, fields) {
+            db.pool.query(selectList, [Shopping_List_ID], function(error, rows) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
@@ -439,13 +431,13 @@ app.put('/update-item-needed/:itemID/:listID', function(req, res) {
     let selectItemNeeded = `SELECT * FROM Items_Needed WHERE Item_ID = ? AND Shopping_List_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateItemNeeded, [newQuantity, Item_ID, Shopping_List_ID], function(error, rows, fields) {
+    db.pool.query(queryUpdateItemNeeded, [newQuantity, Item_ID, Shopping_List_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
             // Run the select query to return the updated item
-            db.pool.query(selectItemNeeded, [Item_ID, Shopping_List_ID], function(error, rows, fields) {
+            db.pool.query(selectItemNeeded, [Item_ID, Shopping_List_ID], function(error, rows) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
@@ -468,13 +460,13 @@ app.put('/update-recipe/:id', function(req, res) {
     let selectRecipe = `SELECT * FROM Recipes WHERE Recipe_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateRecipe, [newName, newInstructions, newDescription, Recipe_ID], function(error, rows, fields) {
+    db.pool.query(queryUpdateRecipe, [newName, newInstructions, newDescription, Recipe_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
             // Run the select query to return the updated recipe
-            db.pool.query(selectRecipe, [Recipe_ID], function(error, rows, fields) {
+            db.pool.query(selectRecipe, [Recipe_ID], function(error, rows) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
@@ -497,13 +489,13 @@ app.put('/update-ingredient/:itemID/:recipeID', function(req, res) {
     let selectIngredient = `SELECT * FROM Ingredients WHERE Item_ID = ? AND Recipe_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateIngredient, [newItemID, newRecipeID, Item_ID, Recipe_ID], function(error, rows, fields) {
+    db.pool.query(queryUpdateIngredient, [newItemID, newRecipeID, Item_ID, Recipe_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
             // Run the select query to return the updated ingredient
-            db.pool.query(selectIngredient, [newItemID, newRecipeID], function(error, rows, fields) {
+            db.pool.query(selectIngredient, [newItemID, newRecipeID], function(error, rows) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);
