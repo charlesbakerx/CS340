@@ -346,7 +346,7 @@ app.put('/update-item-form', function(req, res) {
         `Type_ID = ${data.Type_ID},` +
         `Quantity = ${data.Quantity},` +
         `Unit = "${data.Unit}",` +
-        `Expiry_Date = "${Expiry_Date}" ` +
+        `Expiry_Date = ${Expiry_Date} ` +
         `WHERE Item_ID = ${data.Item_ID}`;
 
     console.log(`SQL Query: ${queryUpdateItem}`);
