@@ -75,7 +75,7 @@
     <input type="text" name="input-Name" id="input-Name" required pattern="\S(.*\S)?" title="Item name cannot begin or end with a space">
 
     <label for="input-Quantity">Quantity of Item: </label>
-    <input type="number" name="input-Quantity" id="input-Quantity" required>
+    <input type="number" name="input-Quantity" id="input-Quantity" required min="0">
 
     <label for="input-Unit">Unit to measure the item: </label>
     <input type="text" name="input-Unit" id="input-Unit" required pattern="\S(.*\S)?" title="Item unit cannot begin or end with a space">
@@ -87,7 +87,7 @@
 </form>
 
 <h2>Update an Item</h2>
-<form id="update-item-form">
+<form id="update-item-form" onsubmit="updateItem()">
     <label for="input-Name-update">Item name: </label>
     <select name="input-Name-update" id="input-Name-update">
         <option value="">Select an Item</option>
@@ -105,7 +105,7 @@
     </select>
 
     <label for="input-Quantity-update">Quantity of Item: </label>
-    <input type="number" name="input-Quantity-update" id="input-Quantity-update" required>
+    <input type="number" name="input-Quantity-update" id="input-Quantity-update" required min="0">
 
     <label for="input-Unit-update">Unit to measure the item: </label>
     <input type="text" name="input-Unit-update" id="input-Unit-update" required pattern="\S(.*\S)?" title="Item unit cannot begin or end with a space">
@@ -113,7 +113,7 @@
     <label for="input-Expiry_Date-update">Date Item Expires if it is perishable: </label>
     <input type="date" name="input-Expiry_Date-update" id="input-Expiry_Date-update">
 
-    <input type="submit" value="Update" onclick="updateItem()">
+    <input type="submit" value="Update">
 </form>
 
 <script>
