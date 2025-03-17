@@ -40,7 +40,7 @@ Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             <td>{{this.Recipe}}</td>
             <td>{{this.Item}}</td>
             <td><button onclick="editIngredient({{this.Item_ID}}, {{this.Recipe_ID}})">Edit</button></td>
-            <td><button onclick="deleteIngredient({{this.Item_ID}}, {{this.Recipe_ID}})">Delete</button></td>
+            <td><button onclick="deleteIngredient({{this.Item_ID}}, {{this.Recipe_ID}}, '{{this.Item}}', '{{this.Recipe}}')">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -135,6 +135,21 @@ Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
                 fetch('/ingredients');
             } else {
                 alert('Error updating ingredient');
+            }
+        });
+    }
+
+    function deleteIngredient(itemID, recipeID, itemName, recipeName) {
+        if (!confirm(`Are you sure you want to delete ${itemName} from ${recipeName}?\nThis action cannot be undone.`)) {
+            return;
+        }
+        fetch(`/delete-ingredient/${itemID}/${recipeID}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                document.querySelector(`tr[data-value="${itemID}"]`).remove();
+            } else {
+                console.error('Failed to delete item.');
             }
         });
     }
