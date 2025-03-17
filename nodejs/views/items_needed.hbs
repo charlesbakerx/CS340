@@ -45,11 +45,16 @@
 <h2>Add a New Item Needed</h2>
 <form id="add-item-needed-form" method="POST" action="/add-item-needed-form">
     <label for="input-List-ID">Shopping List: </label>
-    <input type="text" name="input-List-ID" id="input-List-ID">
-    <label for="input-Item-ID">Item: </label>
-    <input type="text" name="input-Item-ID" id="input-Item-ID">
+    <select name="input-List-ID" id="input-List-ID">
+        <option value="" disabled selected>Select a Shopping List</option>
+        {{#each shoppingLists}}
+        <option value="{{this.Shopping_List_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <label for="input-Item-Name">Item Name: </label>
+    <input type="text" name="input-Item-Name" id="input-Item-Name" required pattern="\S(.*\S)?" title="Item name cannot start or end with a space">
     <label for="input-Quantity">Quantity: </label>
-    <input type="text" name="input-Quantity" id="input-Quantity">
+    <input type="number" name="input-Quantity" id="input-Quantity" min="0" required>
     <input type="submit" value="Submit">
 </form>
 

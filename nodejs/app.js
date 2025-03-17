@@ -103,12 +103,20 @@ app.get('/items_needed', function(req, res) {
         `INNER JOIN Items_In_House ON Items_Needed.Item_ID = Items_In_House.Item_ID ` +
         `INNER JOIN Shopping_Lists ON Items_Needed.Shopping_List_ID = Shopping_Lists.Shopping_List_ID`;
 
+    let shoppingListsQuery = `SELECT * FROM Shopping_Lists;`;
+
     db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            res.render('items_needed', {itemsNeeded: rows});  // Render the items_needed.hbs file with the query result
+            db.pool.query(shoppingListsQuery, function(error, shoppingLists) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    res.render('items_needed', {itemsNeeded: rows, shoppingLists: shoppingLists});
+                }
+            });
         }
     });
 });
@@ -195,15 +203,41 @@ app.post('/add-list-form', function(req, res) {
 
 app.post('/add-item-needed-form', function(req, res) {
     let data = req.body;
-    let query = `INSERT INTO Items_Needed (Item_ID, Shopping_List_ID, Quantity) VALUES ('${data['input-Item-ID']}', '${data['input-List-ID']}', '${data['input-Quantity']}')`;
 
-    db.pool.query(query, function(error) {
+    // Query to check if the item exists yet
+    let selectItemIDQuery = `SELECT Item_ID FROM Items_In_House WHERE UPPER(Name) LIKE UPPER('${data['input-Item-Name']}%')`;
+    let insertItemQuery = `INSERT INTO Items_In_House (Name, Quantity, Unit) VALUES ` +
+        `('${data['input-Item-Name']}', '${data['input-Quantity']}', ' ')`;
+
+    let itemID = 0;
+
+    db.pool.query(selectItemIDQuery, function(error, selectItemIDRows) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
+        } else if (selectItemIDRows.length === 0) {
+            db.pool.query(insertItemQuery, function(error, insertItemRows) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    itemID = insertItemRows.insertId;
+                }
+            });
         } else {
-            res.redirect('/items_needed');
+            itemID = selectItemIDRows[0].Item_ID;
         }
+
+        let query = `INSERT INTO Items_Needed (Item_ID, Shopping_List_ID, Quantity) VALUES ('${itemID}', '${data['input-List-ID']}', '${data['input-Quantity']}')`;
+
+        db.pool.query(query, function(error) {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.redirect('/items_needed');
+            }
+        });
     });
 });
 
