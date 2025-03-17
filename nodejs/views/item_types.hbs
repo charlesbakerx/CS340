@@ -117,21 +117,6 @@ Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
             }
         });
     }
-
-    // Populate dropdown for Update form
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/types')
-            .then(response => response.json())
-            .then(types => {
-                const typeSelect = document.getElementById('typeSelect');
-                types.forEach(type => {
-                    const option = document.createElement('option');
-                    option.value = type.Type_ID;
-                    option.textContent = type.Name;
-                    typeSelect.appendChild(option);
-                });
-            });
-    });
 </script>
 
 </body>

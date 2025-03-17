@@ -181,23 +181,6 @@ Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
         expiryDateField.value = `${y}-${m}-${d}`;
         itemField.scrollIntoView({ behavior: 'smooth', block: 'center'})
     }
-
-    // Populate Type dropdowns for Add and Update forms
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/item_types')
-            .then(response => response.json())
-            .then(types => {
-                const typeSelects = document.querySelectorAll('#input-Type_ID, #input-Type-update');
-                typeSelects.forEach(select => {
-                    types.forEach(type => {
-                        const option = document.createElement('option');
-                        option.value = type.Type_ID;
-                        option.textContent = type.Name;
-                        select.appendChild(option);
-                    });
-                });
-            });
-    });
 </script>
 
 </body>
