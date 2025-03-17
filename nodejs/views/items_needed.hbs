@@ -36,7 +36,7 @@
             <td>{{this.Name}}</td>
             <td>{{this.Quantity}}</td>
             <td><button onclick="editItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}})">Edit</button></td>
-            <td><button onclick="deleteItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}})">Delete</button></td>
+            <td><button onclick="deleteItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}}, '{{this.Name}}', '{{this.Shopping_List}}')">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -116,10 +116,28 @@
         });
     }
 
-    function editItemNeeded(listID, itemID) {
+    function editItemNeeded(itemID, listID) {
+        const shoppingListField = document.querySelector('#input-List-ID-update');
+        const itemField = document.querySelector('#input-Item-ID-update');
+        shoppingListField.value = listID;
+        updateItemSelections(listID);
+        itemField.value = itemID;
+        shoppingListField.scrollIntoView({ behavior: 'smooth', block: 'center'})
     }
 
-    function deleteItemNeeded(listID, itemID) {
+    function deleteItemNeeded(itemID, listID, itemName, listName) {
+        if (!confirm(`Are you sure you want to delete ${itemName} from ${listName}?\nThis action cannot be undone.`)) {
+            return;
+        }
+        fetch(`/delete-item-needed/${itemID}/${listID}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.status === 204) {
+                document.querySelector(`tr[data-item-id="${itemID}"][data-list-id="${listID}"]`).remove();
+            } else {
+                console.error('Failed to delete item.');
+            }
+        });
     }
 </script>
 
