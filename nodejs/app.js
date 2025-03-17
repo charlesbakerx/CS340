@@ -144,15 +144,33 @@ app.post('/add-item-form', function(req, res) {
         Expiry_Date = 'NULL';
     }
 
-    // Create the query and run it on the database
-    let query1 = `INSERT INTO Items_In_House (Item_ID, Type_ID, Name, Quantity, Unit, Expiry_Date) VALUES ('${data['input-Item_ID']}', '${data['input-Type_ID']}','${data['input-Name']}','${data['input-Quantity']}','${data['input-Unit']}' ,${Expiry_Date})`;
-    db.pool.query(query1, function(error) {
+    // Query to check if the item already exists
+    let itemExists = `SELECT * FROM Items WHERE Name = ${data['input-Name']}`;
+    // Query to add a new item
+    let addItemQuery = `INSERT INTO Items (Type_ID, Name) VALUES (${data['input-Type_ID']}, '${data['input-Name']}')`;
+    let addItemToHouse = `INSERT INTO Items_In_House (Item_ID, Quantity, Unit, Expiry_Date) VALUES (` +
+        `(SELECT Item_ID FROM Items WHERE Name = '${data['input-Name']}'), '${data['input-Quantity']}','${data['input-Unit']}' ,${Expiry_Date})`;
+    db.pool.query(itemExists, function(error, result) {
         // Check to see if there was an error
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
             res.sendStatus(400);
         } else {
+            // If the item doesn't exist, add it.
+            if (!result || result.length < 1) {
+                db.pool.query(addItemQuery, function(error) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        db.pool.query(addItemToHouse, function(error) {
+                            if (error) {
+                                console.log(error);
+                            }
+                        })
+                    }
+                })
+            }
             // If there was no error, we redirect back to our root route
             res.redirect('/');
         }
