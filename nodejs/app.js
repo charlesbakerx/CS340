@@ -485,7 +485,7 @@ app.put('/update-list-form', function(req, res) {
 });
 
 // Route to update an item needed
-app.put('/update-item-needed', function(req, res) {
+app.put('/update-item-needed-form', function(req, res) {
     let data = req.body;
     let Item_ID = parseInt(data.Item_ID);
     let Shopping_List_ID = parseInt(data.Shopping_List_ID);
