@@ -71,7 +71,7 @@ Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 <form id="add-item-form" method="POST" action="/add-item-form">
     <label for="input-Type_ID">Item Type: </label>
     <select name="input-Type_ID" id="input-Type_ID" required>
-        <option value="" disabled selected>Select an Item Type</option>
+        <option value="NULL" selected>No Type</option>
         {{#each type}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
@@ -104,7 +104,7 @@ Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
 
     <label for="input-Type-update">Item Type: </label>
     <select name="input-Type-update" id="input-Type-update">
-        <option value="" disabled selected>Select a Type</option>
+        <option value="NULL" selected>No Type</option>
         {{#each type}}
         <option value="{{this.Type_ID}}">{{this.Name}}</option>
         {{/each}}
