@@ -22,8 +22,8 @@
 <table id="ItemsNeeded-table">
     <thead>
         <tr>
-            <th>Item ID</th>
-            <th>Shopping List ID</th>
+            <th>Shopping List</th>
+            <th>Item</th>
             <th>Quantity</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -32,8 +32,8 @@
     <tbody>
         {{#each itemsNeeded}}
         <tr data-item-id={{this.Item_ID}} data-list-id={{this.Shopping_List_ID}}>
-            <td>{{this.Item_ID}}</td>
-            <td>{{this.Shopping_List_ID}}</td>
+            <td>{{this.Shopping_List}}</td>
+            <td>{{this.Name}}</td>
             <td>{{this.Quantity}}</td>
             <td><button onclick="editItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}})">Edit</button></td>
             <td><button onclick="deleteItemNeeded({{this.Item_ID}}, {{this.Shopping_List_ID}})">Delete</button></td>
@@ -44,10 +44,10 @@
 
 <h2>Add a New Item Needed</h2>
 <form id="add-item-needed-form" method="POST" action="/add-item-needed-form">
-    <label for="input-Item-ID">Item ID: </label>
-    <input type="text" name="input-Item-ID" id="input-Item-ID">
-    <label for="input-List-ID">Shopping List ID: </label>
+    <label for="input-List-ID">Shopping List: </label>
     <input type="text" name="input-List-ID" id="input-List-ID">
+    <label for="input-Item-ID">Item: </label>
+    <input type="text" name="input-Item-ID" id="input-Item-ID">
     <label for="input-Quantity">Quantity: </label>
     <input type="text" name="input-Quantity" id="input-Quantity">
     <input type="submit" value="Submit">
@@ -55,10 +55,10 @@
 
 <h2>Update an Item Needed</h2>
 <form id="update-item-needed-form">
-    <label for="input-Item-ID-update">Item ID: </label>
-    <input type="text" name="input-Item-ID-update" id="input-Item-ID-update">
-    <label for="input-List-ID-update">Shopping List ID: </label>
+    <label for="input-List-ID-update">Shopping List: </label>
     <input type="text" name="input-List-ID-update" id="input-List-ID-update">
+    <label for="input-Item-ID-update">Item: </label>
+    <input type="text" name="input-Item-ID-update" id="input-Item-ID-update">
     <label for="input-Quantity-update">New Quantity: </label>
     <input type="text" name="input-Quantity-update" id="input-Quantity-update">
     <input type="submit" value="Update">

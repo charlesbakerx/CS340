@@ -95,7 +95,13 @@ app.get('/shopping_lists', function(req, res) {
 });
 
 app.get('/items_needed', function(req, res) {
-    let query = "SELECT * FROM Items_Needed;";  // Define our query
+    let query = `SELECT ` +
+        `Items_In_House.Item_ID, Items_In_House.Name, ` +
+        `Shopping_Lists.Shopping_List_ID, Shopping_Lists.Name AS Shopping_List, ` +
+        `Items_Needed.Quantity ` +
+        `FROM Items_Needed ` +
+        `INNER JOIN Items_In_House ON Items_Needed.Item_ID = Items_In_House.Item_ID ` +
+        `INNER JOIN Shopping_Lists ON Items_Needed.Shopping_List_ID = Shopping_Lists.Shopping_List_ID`;
 
     db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
