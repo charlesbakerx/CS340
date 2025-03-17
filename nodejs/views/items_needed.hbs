@@ -96,9 +96,9 @@
 
     function updateItemNeeded() {
         const data = {
-            Shopping_List_ID: document.querySelector('#input-List-ID-update').value;
-            Item_ID: document.querySelector('#input-Item-ID-update').value;
-            Quantity: document.querySelector('#input-Quantity-update').value;
+            Shopping_List_ID: document.querySelector('#input-List-ID-update').value,
+            Item_ID: document.querySelector('#input-Item-ID-update').value,
+            Quantity: document.querySelector('#input-Quantity-update').value
         }
         fetch('/update-item-needed-form', {
             method: 'PUT',
