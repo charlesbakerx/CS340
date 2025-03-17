@@ -514,17 +514,18 @@ app.put('/update-item-needed-form', function(req, res) {
 });
 
 // Route to update a recipe
-app.put('/update-recipe/:id', function(req, res) {
-    let Recipe_ID = parseInt(req.params.id);
-    let newName = req.body.newName;
-    let newInstructions = req.body.newInstructions;
-    let newDescription = req.body.newDescription;
+app.put('/update-recipe-form', function(req, res) {
+    let data = req.body;
+    let Recipe_ID = parseInt(data.Recipe_ID);
+    let Name = data.Name;
+    let Instructions = data.Instructions;
+    let Description = data.Description;
 
     let queryUpdateRecipe = `UPDATE Recipes SET Name = ?, Instructions = ?, Description = ? WHERE Recipe_ID = ?`;
     let selectRecipe = `SELECT * FROM Recipes WHERE Recipe_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateRecipe, [newName, newInstructions, newDescription, Recipe_ID], function(error) {
+    db.pool.query(queryUpdateRecipe, [Name, Instructions, Description, Recipe_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);

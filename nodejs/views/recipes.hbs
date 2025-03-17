@@ -37,8 +37,13 @@
             <td>{{this.Name}}</td>
             <td>{{this.Instructions}}</td>
             <td>{{this.Description}}</td>
-            <td><button onclick="editRecipe({{this.Recipe_ID}})">Edit</button></td>
-            <td><button onclick="deleteRecipe({{this.Recipe_ID}})">Delete</button></td>
+            <td><button onclick="editRecipe({
+                    Recipe_ID: {{this.Recipe_ID}},
+                    Name: '{{this.Name}}',
+                    Instructions: '{{this.Instructions}}',
+                    Description: '{{this.Description}}'
+            })">Edit</button></td>
+            <td><button onclick="deleteRecipe({{this.Recipe_ID}}, '{{this.Name}}')">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -47,16 +52,86 @@
 <h2>Add a New Recipe</h2>
 <form id="add-recipe-form" method="POST" action="/add-recipe-form">
     <label for="input-Name">Name: </label>
-    <input type="text" name="input-Name" id="input-Name">
+    <input type="text" name="input-Name" id="input-Name" required pattern="\S(.*\S)?" title="Name cannot start or end with whitespace">
     <label for="input-Instructions">Instructions: </label>
-    <textarea name="input-Instructions" id="input-Instructions"></textarea>
+    <textarea name="input-Instructions" id="input-Instructions" required></textarea>
     <label for="input-Description">Description: </label>
     <textarea name="input-Description" id="input-Description"></textarea>
     <input type="submit" value="Submit">
 </form>
 
-<script src="./js/delete_recipe.js"></script>
-<script src="./js/update_recipe.js"></script>
+<h2>Update a Recipe</h2>
+<form id="update-recipe-form" onsubmit="updateRecipe()">
+    <label for="input-Recipe_ID">Recipe: </label>
+    <select name="input-Recipe_ID" id="input-Recipe_ID">
+        <option value="" disabled selected>Select a Recipe</option>
+        {{#each recipes}}
+        <option value="{{this.Recipe_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <label for="input-Name-update">Name: </label>
+    <input type="text" name="input-Name-update" id="input-Name-update" required pattern="\S(.*\S)?" title="Name cannot start or end with whitespace">
+    <label for="input-Instructions-update">Instructions: </label>
+    <textarea name="input-Instructions-update" id="input-Instructions-update" required></textarea>
+    <label for="input-Description-update">Description: </label>
+    <textarea name="input-Description-update" id="input-Description-update"></textarea>
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    function editRecipe(recipe) {
+        const recipeIDField = document.querySelector('#input-Recipe_ID');
+        const nameField = document.querySelector('#input-Name-update');
+        const instructionsField = document.querySelector('#input-Instructions-update');
+        const descriptionField = document.querySelector('#input-Description-update');
+
+        recipeIDField.value = recipe.Recipe_ID;
+        nameField.value = recipe.Name;
+        instructionsField.value = recipe.Instructions;
+        descriptionField.value = recipe.Description;
+
+        recipeIDField.scrollIntoView({ behavior: 'smooth', block: 'center'})
+    }
+
+    function updateRecipe() {
+        const data = {
+            Recipe_ID: document.querySelector('#input-Recipe_ID').value,
+            Name: document.querySelector('#input-Name-update').value,
+            Instructions: document.querySelector('#input-Instructions-update').value,
+            Description: document.querySelector('#input-Description-update').value
+        }
+
+        fetch('/update-recipe-form', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok) {
+                alert('Recipe updated successfully');
+                fetch('/recipes');
+            } else {
+                alert('Error updating recipe');
+            }
+        });
+    }
+
+    function deleteRecipe(recipeID, recipeName) {
+        if (!confirm(`Are you sure you want to delete ${recipeName}?\nThis action cannot be undone.`)) {
+            return;
+        }
+        fetch(`/delete-recipe/${recipeID}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (response.ok) {
+                document.querySelector(`tr[data-recipe-id="${recipeID}"]`).remove();
+            } else {
+                console.error('Failed to delete item.');
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
