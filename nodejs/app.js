@@ -135,14 +135,36 @@ app.get('/recipes', function(req, res) {
 });
 
 app.get('/ingredients', function(req, res) {
-    let query = "SELECT * FROM Ingredients;";  // Define our query
+    let query = `SELECT ` +
+                `Ingredients.Item_ID, Ingredients.Recipe_ID, ` +
+                `Recipes.Name AS Recipe, Items_In_House.Name AS Item ` +
+                `FROM Ingredients ` +
+                `INNER JOIN Recipes ON Ingredients.Recipe_ID = Recipes.Recipe_ID ` +
+                `INNER JOIN Items_In_House ON Ingredients.Item_ID = Items_In_House.Item_ID`;  // Define our query
+
+    let recipesQuery = `SELECT * FROM Recipes`;
+    let itemsQuery = `SELECT * FROM Items_In_House`;
 
     db.pool.query(query, function(error, rows) {  // Execute the query
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            res.render('ingredients', {ingredients: rows});  // Render the ingredients.hbs file with the query result
+            db.pool.query(recipesQuery, function(error, recipeRows) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    db.pool.query(itemsQuery, function(error, itemRows) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            res.render('ingredients', {ingredients: rows, recipes: recipeRows, items:itemRows});  // Render the ingredients.hbs file with the query result
+                        }
+                    });
+                }
+            });
         }
     });
 });
@@ -269,7 +291,7 @@ app.post('/add-recipe-form', function(req, res) {
 
 app.post('/add-ingredient-form', function(req, res) {
     let data = req.body;
-    let query = `INSERT INTO Ingredients (Item_ID, Recipe_ID) VALUES ('${data['input-Item-ID']}', '${data['input-Recipe-ID']}')`;
+    let query = `INSERT INTO Ingredients (Item_ID, Recipe_ID) VALUES ('${data['input-Item_ID']}', '${data['input-Recipe_ID']}')`;
 
     db.pool.query(query, function(error) {
         if (error) {
@@ -544,23 +566,19 @@ app.put('/update-recipe-form', function(req, res) {
 });
 
 // Route to update an ingredient
-app.put('/update-ingredient/:itemID/:recipeID', function(req, res) {
-    let Item_ID = parseInt(req.params.itemID);
-    let Recipe_ID = parseInt(req.params.recipeID);
-    let newItemID = req.body.newItemID;
-    let newRecipeID = req.body.newRecipeID;
-
-    let queryUpdateIngredient = `UPDATE Ingredients SET Item_ID = ?, Recipe_ID = ? WHERE Item_ID = ? AND Recipe_ID = ?`;
+app.put('/update-ingredient', function(req, res) {
+    let data = req.body;
+    let queryUpdateIngredient = `UPDATE Ingredients SET Item_ID = ? WHERE Recipe_ID = ? AND Item_ID = ?`;
     let selectIngredient = `SELECT * FROM Ingredients WHERE Item_ID = ? AND Recipe_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateIngredient, [newItemID, newRecipeID, Item_ID, Recipe_ID], function(error) {
+    db.pool.query(queryUpdateIngredient, [data.New_Item_ID, data.Recipe_ID, data.Item_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
             // Run the select query to return the updated ingredient
-            db.pool.query(selectIngredient, [newItemID, newRecipeID], function(error, rows) {
+            db.pool.query(selectIngredient, [data.New_Item_ID, data.Recipe_ID], function(error, rows) {
                 if (error) {
                     console.log(error);
                     res.sendStatus(400);

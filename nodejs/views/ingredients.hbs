@@ -1,3 +1,9 @@
+<!--
+Citation for the following file:
+Date: 03/16/2025
+Adapted from the OSU CS340 eCampus Node.js Starter App Guide
+Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,17 +28,17 @@
 <table id="Ingredients-table">
     <thead>
         <tr>
-            <th>Item ID</th>
-            <th>Recipe ID</th>
+            <th>Recipe</th>
+            <th>Item</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
     </thead>
     <tbody>
         {{#each ingredients}}
-        <tr data-item-id={{this.Item_ID}} data-recipe-id={{this.Recipe_ID}}>
-            <td>{{this.Item_ID}}</td>
-            <td>{{this.Recipe_ID}}</td>
+        <tr data-value={{this.Item_ID}}>
+            <td>{{this.Recipe}}</td>
+            <td>{{this.Item}}</td>
             <td><button onclick="editIngredient({{this.Item_ID}}, {{this.Recipe_ID}})">Edit</button></td>
             <td><button onclick="deleteIngredient({{this.Item_ID}}, {{this.Recipe_ID}})">Delete</button></td>
         </tr>
@@ -42,15 +48,96 @@
 
 <h2>Add a New Ingredient</h2>
 <form id="add-ingredient-form" method="POST" action="/add-ingredient-form">
-    <label for="input-Item-ID">Item ID: </label>
-    <input type="text" name="input-Item-ID" id="input-Item-ID">
-    <label for="input-Recipe-ID">Recipe ID: </label>
-    <input type="text" name="input-Recipe-ID" id="input-Recipe-ID">
+    <label for="input-Recipe_ID">Recipe: </label>
+    <select name="input-Recipe_ID" id="input-Recipe_ID">
+        <option value="">Select a Recipe</option>
+        {{#each recipes}}
+        <option value="{{this.Recipe_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-Item_ID">Item: </label>
+    <select name="input-Item_ID" id="input-Item_ID">
+        <option value="" disabled selected>Select an Item</option>
+        {{#each items}}
+        <option value="{{this.Item_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
     <input type="submit" value="Submit">
 </form>
 
-<script src="./js/delete_ingredient.js"></script>
-<script src="./js/update_ingredient.js"></script>
+<h2>Update Ingredient</h2>
+<form id="update-ingredient-form" onsubmit="updateIngredient()">
+    <label for="input-Recipe_ID-update">Recipe: </label>
+    <select name="input-Recipe_ID-update" id="input-Recipe_ID-update" onchange="updateIngredientSelections(this.value)">
+        <option value="" >Select a Recipe</option>
+        {{#each recipes}}
+            <option value="{{this.Recipe_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
 
+    <label for="input-Item_ID-update">Item: </label>
+    <select name="input-Item_ID-update" id="input-Item_ID-update">
+        <option value="" disabled selected>Select an Item</option>
+        {{#each ingredients}}
+        <option class="{{this.Recipe_ID}}" value="{{this.Item_ID}}" disabled hidden>{{this.Item}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-Item_ID-new">New Item: </label>
+    <select name="input-Item_ID-new" id="input-Item_ID-new">
+        <option value="" disabled selected>Select an Item</option>
+        {{#each items}}
+            <option value="{{this.Item_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    function updateIngredientSelections(recipeID) {
+        document.getElementById('input-Item_ID-update').selectedIndex = 0;
+        let ingredients = document.querySelectorAll('select[name="input-Item_ID-update"] option')
+        for (let i = 0; i < ingredients.length; i++) {
+            if (ingredients[i].classList.contains(recipeID)) {
+                ingredients[i].removeAttribute('disabled');
+                ingredients[i].removeAttribute('hidden');
+            } else {
+                ingredients[i].setAttribute('disabled', 'disabled');
+                ingredients[i].setAttribute('hidden', 'hidden');
+            }
+        }
+    }
+
+    function editIngredient(itemID, recipeID) {
+        document.getElementById('input-Recipe_ID-update').value = recipeID;
+        updateIngredientSelections(recipeID);
+        document.getElementById('input-Item_ID-update').value = itemID;
+        document.getElementById('input-Item-newName').scrollIntoView({ behavior: 'smooth', block: 'center'});
+    }
+
+    function updateIngredient() {
+        const data = {
+            Recipe_ID: document.querySelector('#input-Recipe_ID-update').value,
+            Item_ID: document.querySelector('#input-Item_ID-update').value,
+            New_Item_ID: document.querySelector('#input-Item_ID-new').value
+        }
+
+        fetch('/update-ingredient', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok) {
+                fetch('/ingredients');
+            } else {
+                alert('Error updating ingredient');
+            }
+        });
+    }
+</script>
 </body>
 </html>
