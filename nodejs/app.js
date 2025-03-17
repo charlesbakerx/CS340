@@ -36,11 +36,12 @@ let db = require('./database/db-connector');
 
 /*  ROUTES  */
 app.get('/', function(req, res) {  
-    let query1 = "SELECT Items_In_House.Type_ID, Items_In_House.Item_ID, " + 
-      "Item_Types.Name AS Type, Items_In_House.Name, Items_In_House.Quantity, " +
+    let query1 = "SELECT Items.Type_ID, Items.Item_ID, " +
+      "Item_Types.Name AS Type, Items.Name, Items_In_House.Quantity, " +
       "Items_In_House.Unit, Items_In_House.Expiry_Date " +
-      "FROM Items_In_House " +
-      "INNER JOIN Item_Types ON Items_In_House.Type_ID = Item_Types.Type_ID";
+      "FROM Items " +
+      "INNER JOIN Item_Types ON Items.Type_ID = Item_Types.Type_ID " +
+      "INNER JOIN Items_In_House ON Items.Item_ID = Items_In_House.Item_ID";
     let query2 = "SELECT * FROM Item_Types;";
     if (req.query.Name) {
         let name = req.query.Name;
@@ -349,22 +350,33 @@ app.put('/update-item-form', function(req, res) {
         Expiry_Date = 'NULL';
     }
 
-    let queryUpdateItem = `UPDATE Items_In_House SET ` +
-        `Type_ID = ${data.Type_ID},` +
+    let queryUpdateItem = `UPDATE Items SET ` +
+        `Type_ID = ${data.Type_ID} ` +
+        `WHERE Item_ID = ${data.Item_ID}`;
+
+    let queryUpdateItemInHouse = `UPDATE Items_In_House SET ` +
         `Quantity = ${data.Quantity},` +
         `Unit = "${data.Unit}",` +
         `Expiry_Date = ${Expiry_Date} ` +
         `WHERE Item_ID = ${data.Item_ID}`;
 
     console.log(`SQL Query: ${queryUpdateItem}`);
+    console.log(`SQL Query: ${queryUpdateItemInHouse}`);
     // Run the 1st query
-    db.pool.query(queryUpdateItem, function(error, rows) {
+    db.pool.query(queryUpdateItem, function(error) {
         if (error) {
             // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error);
             res.sendStatus(400);
         } else {
-            res.send(rows);
+            db.pool.query(queryUpdateItemInHouse, function(error, rows) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
         }
     });
 });
