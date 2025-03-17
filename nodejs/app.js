@@ -202,44 +202,55 @@ app.post('/add-list-form', function(req, res) {
     });
 });
 
-app.post('/add-item-needed-form', function(req, res) {
+app.post('/add-item-needed-form', async function (req, res) {
     let data = req.body;
 
     // Query to check if the item exists yet
-    let selectItemIDQuery = `SELECT Item_ID FROM Items_In_House WHERE UPPER(Name) LIKE UPPER('${data['input-Item-Name']}%')`;
-    let insertItemQuery = `INSERT INTO Items_In_House (Name, Quantity, Unit) VALUES ` +
-        `('${data['input-Item-Name']}', '${data['input-Quantity']}', ' ')`;
+    let selectItemIDQuery = `SELECT Item_ID ` +
+                            `FROM Items_In_House ` +
+                            `WHERE UPPER(Name) LIKE UPPER('${data['input-Item-Name']}%')`;
+    let insertItemQuery = `INSERT INTO Items_In_House (Name, Quantity, Unit) ` +
+                            `VALUES ` +
+                            `('${data['input-Item-Name']}', 0, ' ')`;
 
-    let itemID = 0;
-
-    db.pool.query(selectItemIDQuery, function(error, selectItemIDRows) {
+    db.pool.query(selectItemIDQuery, function(error, rows) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
-        } else if (selectItemIDRows.length === 0) {
-            db.pool.query(insertItemQuery, function(error, insertItemRows) {
-                if (error) {
-                    console.log(error);
-                    res.sendStatus(400);
-                } else {
-                    itemID = insertItemRows.insertId;
-                }
-            });
         } else {
-            itemID = selectItemIDRows[0].Item_ID;
-        }
-
-        let query = `INSERT INTO Items_Needed (Item_ID, Shopping_List_ID, Quantity) VALUES ('${itemID}', '${data['input-List-ID']}', '${data['input-Quantity']}')`;
-
-        db.pool.query(query, function(error) {
-            if (error) {
-                console.log(error);
-                res.sendStatus(400);
+            if (rows.length > 0) {
+                let query = `INSERT INTO Items_Needed (Item_ID, Shopping_List_ID, Quantity) ` +
+                    `VALUES ('${rows[0].Item_ID}', '${data['input-List-ID']}', '${data['input-Quantity']}')`;
+                db.pool.query(query, function(error) {
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                        return;
+                    }
+                    res.redirect('/items_needed');
+                });
             } else {
-                res.redirect('/items_needed');
+                db.pool.query(insertItemQuery, function(error, insertRows) {
+                    if (error) {
+                        console.log(error);
+                        res.sendStatus(400);
+                    }
+                    let query = `INSERT INTO Items_Needed (Item_ID, Shopping_List_ID, Quantity) ` +
+                        `VALUES ('${insertRows.insertId}', '${data['input-List-ID']}', '${data['input-Quantity']}')`;
+                    db.pool.query(query, function(error) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            res.redirect('/items_needed');
+                        }
+                    });
+                });
             }
-        });
+        }
     });
+
+
 });
 
 app.post('/add-recipe-form', function(req, res) {
