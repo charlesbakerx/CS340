@@ -59,18 +59,69 @@
 </form>
 
 <h2>Update an Item Needed</h2>
-<form id="update-item-needed-form">
+<form id="update-item-needed-form" onsubmit="updateItemNeeded()">
     <label for="input-List-ID-update">Shopping List: </label>
-    <input type="text" name="input-List-ID-update" id="input-List-ID-update">
+    <select name="input-List-ID-update" id="input-List-ID-update" onchange="updateItemSelections(this.value)">
+        <option value="" disabled selected>Select a Shopping List</option>
+        {{#each shoppingLists}}
+        <option value="{{this.Shopping_List_ID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
     <label for="input-Item-ID-update">Item: </label>
-    <input type="text" name="input-Item-ID-update" id="input-Item-ID-update">
+    <select name="input-Item-ID-update" id="input-Item-ID-update">
+        <option value="" disabled selected>Select an Item</option>
+        {{#each itemsNeeded}}
+        <option class="{{this.Shopping_List_ID}}" value="{{this.Item_ID}}" disabled hidden>{{this.Name}}</option>
+        {{/each}}
+    </select>
     <label for="input-Quantity-update">New Quantity: </label>
-    <input type="text" name="input-Quantity-update" id="input-Quantity-update">
+    <input type="number" name="input-Quantity-update" id="input-Quantity-update" min="0" required>
     <input type="submit" value="Update">
 </form>
 
-<script src="./js/delete_item_needed.js"></script>
-<script src="./js/update_item_needed.js"></script>
+<script>
+    function updateItemSelections(listID) {
+        document.getElementById('input-Item-ID-update').selectedIndex = 0;
+        let itemsNeeded = document.querySelectorAll('select[name="input-Item-ID-update"] option');
+        for (let i = 0; i < itemsNeeded.length; i++) {
+            if (itemsNeeded[i].classList.contains(listID)) {
+                itemsNeeded[i].removeAttribute('disabled');
+                itemsNeeded[i].removeAttribute('hidden');
+            } else {
+                itemsNeeded[i].setAttribute('disabled', 'disabled');
+                itemsNeeded[i].setAttribute('hidden', 'hidden');
+            }
+        }
+    }
+
+    function updateItemNeeded() {
+        const data = {
+            Shopping_List_ID: document.querySelector('#input-List-ID-update').value;
+            Item_ID: document.querySelector('#input-Item-ID-update').value;
+            Quantity: document.querySelector('#input-Quantity-update').value;
+        }
+        fetch('/update-item-needed-form', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.ok) {
+                alert('Item Needed Updated');
+                fetch('/items_needed');
+            } else {
+                alert('Failed to update item needed');
+            }
+        });
+    }
+
+    function editItemNeeded(listID, itemID) {
+    }
+
+    function deleteItemNeeded(listID, itemID) {
+    }
+</script>
 
 </body>
 </html>

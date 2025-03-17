@@ -485,16 +485,17 @@ app.put('/update-list-form', function(req, res) {
 });
 
 // Route to update an item needed
-app.put('/update-item-needed/:itemID/:listID', function(req, res) {
-    let Item_ID = parseInt(req.params.itemID);
-    let Shopping_List_ID = parseInt(req.params.listID);
-    let newQuantity = req.body.newQuantity;
+app.put('/update-item-needed', function(req, res) {
+    let data = req.body;
+    let Item_ID = parseInt(data.Item_ID);
+    let Shopping_List_ID = parseInt(data.Shopping_List_ID);
+    let Quantity = data.Quantity;
 
     let queryUpdateItemNeeded = `UPDATE Items_Needed SET Quantity = ? WHERE Item_ID = ? AND Shopping_List_ID = ?`;
     let selectItemNeeded = `SELECT * FROM Items_Needed WHERE Item_ID = ? AND Shopping_List_ID = ?`;
 
     // Run the update query
-    db.pool.query(queryUpdateItemNeeded, [newQuantity, Item_ID, Shopping_List_ID], function(error) {
+    db.pool.query(queryUpdateItemNeeded, [Quantity, Item_ID, Shopping_List_ID], function(error) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
