@@ -1,3 +1,10 @@
+/*
+Citation for the following file:
+    Date: 03/16/2025
+    Adapted from the OSU CS340 eCampus Node.js Starter App Guide
+    Repo: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+*/
+
 /*  Express and Handlebars Setup   */
 const express = require('express');   // We are using the express library for the web server
 const app     = express();            // We need to instantiate an express object to interact with the server in our code
