@@ -40,7 +40,7 @@ app.get('/', function(req, res) {
       "Item_Types.Name AS Type, Items_In_House.Name, Items_In_House.Quantity, " +
       "Items_In_House.Unit, Items_In_House.Expiry_Date " +
       "FROM Items_In_House " +
-      "INNER JOIN Item_Types ON Items_In_House.Type_ID = Item_Types.Type_ID";
+      "LEFT JOIN Item_Types ON Items_In_House.Type_ID = Item_Types.Type_ID";
     let query2 = "SELECT * FROM Item_Types;";
     if (req.query.Name) {
         let name = req.query.Name;
@@ -151,14 +151,15 @@ app.post('/add-item-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
 
-    // Capture NULL values
-    let Expiry_Date = data['input-Expiry_Date'];
-    if (Expiry_Date.length === 0) {
-        Expiry_Date = 'NULL';
-    }
 
     // Create the query and run it on the database
-    let query1 = `INSERT INTO Items_In_House (Item_ID, Type_ID, Name, Quantity, Unit, Expiry_Date) VALUES ('${data['input-Item_ID']}', '${data['input-Type_ID']}','${data['input-Name']}','${data['input-Quantity']}','${data['input-Unit']}' ,'${Expiry_Date}')`;
+    let query1 = `INSERT INTO Items_In_House (Item_ID, Type_ID, Name, Quantity, Unit, Expiry_Date) VALUES ('${data['input-Item_ID']}', ${data['input-Type_ID']},'${data['input-Name']}','${data['input-Quantity']}','${data['input-Unit']}' ,'${data['input-Expiry_Date']}')`;
+
+    // Capture NULL values
+    if (data['input-Expiry_Date'].length === 0) {
+        query1 = `INSERT INTO Items_In_House (Item_ID, Type_ID, Name, Quantity, Unit, Expiry_Date) VALUES ('${data['input-Item_ID']}', ${data['input-Type_ID']},'${data['input-Name']}','${data['input-Quantity']}','${data['input-Unit']}' , NULL)`;
+    }
+
     db.pool.query(query1, function(error) {
         // Check to see if there was an error
         if (error) {
@@ -383,18 +384,22 @@ app.delete('/delete-ingredient/:itemID/:recipeID', function(req, res) {
 // Update item route
 app.put('/update-item-form', function(req, res) {
     let data = req.body;
-    let Expiry_Date = data.Expiry_Date;
-    console.log(`Expiry date is ${Expiry_Date}`);
-    if (Expiry_Date.length === 0) {
-        Expiry_Date = 'NULL';
-    }
 
     let queryUpdateItem = `UPDATE Items_In_House SET ` +
         `Type_ID = ${data.Type_ID},` +
         `Quantity = ${data.Quantity},` +
         `Unit = "${data.Unit}",` +
-        `Expiry_Date = "${Expiry_Date}" ` +
+        `Expiry_Date = "${data.Expiry_Date}" ` +
         `WHERE Item_ID = ${data.Item_ID}`;
+    if (data.Expiry_Date.length === 0) {
+        queryUpdateItem = `UPDATE Items_In_House SET ` +
+            `Type_ID = ${data.Type_ID},` +
+            `Quantity = ${data.Quantity},` +
+            `Unit = "${data.Unit}",` +
+            `Expiry_Date = NULL ` +
+            `WHERE Item_ID = ${data.Item_ID}`;
+    }
+
 
     console.log(`SQL Query: ${queryUpdateItem}`);
     // Run the 1st query
